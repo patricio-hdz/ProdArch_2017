@@ -1,2 +1,6 @@
 # ProdArch_2017
-Curso Data Product Architecture 2017
+Integrantes del equipo: 
+* Oscar Daniel Camarena Gomez 
+* Patricio Hernandez 
+* Maximiliano Alvarez 
+* Alejandro Perez
