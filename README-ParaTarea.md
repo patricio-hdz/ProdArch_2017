@@ -35,6 +35,10 @@ Cuando realizamos PCA, seguimos 4 pasos escencialmente durante este proceso:
   3. Encontramos las componentes principales.
   4. Reducimos los datos en base a las componentes principales seleccionadas.
   
+Cuando llevamos a cabo un PCA, buscamos encontrar una representación fiel pero reducida de nuestros datos. Dado lo anterior centramos los datos para trabajar en el origen, posteriormente calculamos las covarianzas ya que éstas nos brindan una medida de las variaciones en los datos.
+
+Para obtener las componentes principales, llevamos a cabo una descomposicón SVD de la matriz de covarianzas, dicha descomposición  como explicamos en los incisos anteriores nos permite a través de los eigenvectores más grandes y sus eigenvalores asociados, descubrir las direcciones y las magnitudes que mejor capturan la naturaleza de los datos. Finalmente utilizamos las componentes que hagan más sentido para reducir la dimensionalidad de la base con la cual trabajamos.
+
 ### b. Relación entre loadings del PCA y correlaciones entre variables originales y componentes.
 
 Los loadings representan las correlaciones entre las variables originales y las componentes.
