@@ -19,5 +19,11 @@ Finalmente, de la forma cuadrática $\{x : x'\Sigma x = 1\}$ sabemos que, puesto
 
 ### b. Descomposición SVD y su diagonalización
 
-Dado que la descomposición SVD es un proceso de diagonalización general (para matrices de $m x n$ y no solo para matrices cuadradas) podemos interpretar ambas de la misma forma. Dad una matriz $A$ su descomposición SVD es $A=U\Sigma V'$ en donde la transformacion ortogonal $V$ produce una rotación, $\Sigma$ diagonal produce un deformamiento y $U$ produce una rotación. Para el caso de un conjunto de datos tendremos que su matriz de covarianzas es simétrica y por lo tanto su descomposición SVD será de la forma $\Sigma=P'\Lambda P$, con $P$ matriz ortogonal con los vectores propios de $\Sigma$ y $\Lambda$ matriz diagonal con los valores propios al cuadrado de $\Sigma$.
+Dado que la descomposición SVD es un proceso de diagonalización general (para matrices de $m x n$ y no solo para matrices cuadradas) podemos interpretar ambas de la misma forma. Dad una matriz $A$ su descomposición SVD es $A=U\Sigma V'$ en donde la transformacion ortogonal $V$ produce una rotación, $\Sigma$ diagonal produce un deformamiento y $U$ produce una rotación. 
+
+### c. Relación entre SVD y diagonalización de la matriz de covarianzas de A.
+
+Sabemos que para datos centrados la matriz de covarianzas de $A$ está dada por $A'A$. Los valores singulares de la matriz $A$ son las raices cuadradas de los eigenvectores de $A'A$. Si la descomposición SVD de $A$ es $A=U\Sigma V'$ entonces las columnas de $V$ son los eigenvectores de la matriz $A'A$ (matriz de covarianzas de A).
+
+
 
