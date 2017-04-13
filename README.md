@@ -21,3 +21,6 @@ http://halweb.uc3m.es/esp/Personal/personas/jmmarin/esp/AMult/acorresp.pdf
 
 algebra matricial:
 http://halweb.uc3m.es/esp/Personal/personas/jmmarin/esp/AMult/tema1am.pdf
+
+Distancias:
+http://84.89.132.1/~michael/stanford/maeb4.pdf
