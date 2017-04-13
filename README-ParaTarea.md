@@ -19,7 +19,7 @@ Finalmente, de la forma cuadrática $\{x : x'\Sigma x = 1\}$ sabemos que, puesto
 
 ### b. Descomposición SVD y su diagonalización
  
--Dado que la descomposición SVD es un proceso de diagonalización general (para matrices de $m x n$ y no solo para matrices cuadradas) podemos interpretar ambas de la misma forma. Dad una matriz $A$ su descomposición SVD es $A=U\Sigma V'$ en donde la transformacion ortogonal $V$ produce una rotación, $\Sigma$ diagonal produce un deformamiento y $U$ produce una rotación. Para el caso de un conjunto de datos tendremos que su matriz de covarianzas es simétrica y por lo tanto su descomposición SVD será de la forma $\Sigma=P'\Lambda P$, con $P$ matriz ortogonal con los vectores propios de $\Sigma$ y $\Lambda$ matriz diagonal con los valores propios al cuadrado de $\Sigma$.
+Dado que la descomposición SVD es un proceso de diagonalización general (para matrices de $m x n$ y no solo para matrices cuadradas) podemos interpretar ambas de la misma forma. Dad una matriz $A$ su descomposición SVD es $A=U\Sigma V'$ en donde la transformacion ortogonal $V$ produce una rotación, $\Sigma$ diagonal produce un deformamiento y $U$ produce una rotación. Para el caso de un conjunto de datos tendremos que su matriz de covarianzas es simétrica y por lo tanto su descomposición SVD será de la forma $\Sigma=P'\Lambda P$, con $P$ matriz ortogonal con los vectores propios de $\Sigma$ y $\Lambda$ matriz diagonal con los valores propios al cuadrado de $\Sigma$.
 
 ### c. Relación entre SVD y diagonalización de la matriz de covarianzas de A.
 
@@ -34,4 +34,8 @@ Cuando realizamos PCA, seguimos 4 pasos escencialmente durante este proceso:
   2. Calculamos la matriz de covarianzas.
   3. Encontramos las componentes principales.
   4. Reducimos los datos en base a las componentes principales seleccionadas.
+  
+### b. Relación entre loadings del PCA y correlaciones entre variables originales y componentes.
+
+Los loadings representan las correlaciones entre las variables originales y las componentes.
   
