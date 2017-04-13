@@ -47,4 +47,64 @@ Los loadings representan las correlaciones entre las variables originales y las 
 
 Materializamos el concepto del significado de cada componente en función de las variables originales dependiendo del sentido de las correlaciones que dicha componente tenga con ellas.
 
-Por otro lado la rotación varimax es un método de rotación ortogonal que minimiza el número de varibales qque tienen saturaciones altas en cada factor. Simplifica la interpretación de los factores optimizando la solución por columna. Además, sabemos que las componentes representan nuevos ejes y la proyección de la nube de puntos sobre estos nos sirve para interpretar la relación entre las variables. La rotación varimax consigue que cada componente rotado presente correlaciones más claras con algunas variables, lo cual facilita la interpretabilidad.   
+Por otro lado la rotación varimax es un método de rotación ortogonal que minimiza el número de varibales qque tienen saturaciones altas en cada factor. Simplifica la interpretación de los factores optimizando la solución por columna. Además, sabemos que las componentes representan nuevos ejes y la proyección de la nube de puntos sobre estos nos sirve para interpretar la relación entre las variables. La rotación varimax consigue que cada componente rotado presente correlaciones más claras con algunas variables, lo cual facilita la interpretabilidad.
+
+## 4. Escalamiento multidimensional
+
+### a. Objetivo del Classical Multidimensional Scaling
+
+Si tenemos una matriz de distancias entre puntos (matriz de disimilitudes), el escalamiento multidimensional clásico (también conocido como análisis de coordenadas principales), nos permité reconstruir la matriz de distancias euclidianas originales. Un gráfico de dispersión de esta matriz nos mostraría una visualización de las distancias originales de los puntos en un mapa.
+
+### b. Demostración
+
+### c. Mapa de ciudades
+
+```{r}
+require(graphics)
+
+loc <- cmdscale(eurodist)
+x <- loc[, 1]
+# el signo menos pone al Norte arriba, de lo contrario el mapa aparece al revés
+y <- loc[, 2]
+plot(x, y, type = "n", xlab = "", ylab = "", asp = 1, axes = FALSE,
+     main = "Distancias eurodist")
+text(x, y, rownames(loc), cex = 0.6)
+```
+
+Como podemos observar en el mapa, el norte, que debería aparecer en la parte superior del mapa, se encuentra en la parte inferior. El mapa está rotado. Lo anterior, se debe a que el signo de la segunda columna es el opuesto. Multiplicar la segunda columna de la matriz obtenida del MDS clásico nos arrojaría el mapa correcto.
+
+La causa de esto viene de las matrices que obtenemos de la descomposición en valores singulares. De la descomposición de una matriz $A$ como $A = U \Sigma V'$, la matriz $U$ está formada por los eigenvectores ortonormales de $AA'$, mientras que la matriz $V$ está formada por los eigenvectores ortonormales de la matriz $A'A$. Lo que representa esta descomposición es una serie de transformaciones lineales de una matriz; donde las matrices ortogonales $U$ y $V$ preservan el producto de matrices, tales como las rotaciones. Como transformaciones lineales, una matriz ortogonal funciones como una rotación. 
+
+## 5. Temas adicionales
+
+### 1. Correlaciones policóricas y poliseriales
+
+Es una técnica que permite estimar la correlación entre pares variables latentes (normalmente distribuidas) que correspondan a dos variables ordinales.
+
+### 2. Análisis factorial y structural equation modeling
+
+El análisis factorial se usa para determinar qué variables están más relacionadas con los factores más comunes y cuántos factores son necesarios para "explicar" los datos a un nivel aceptable. 
+
+El propósito del SEM es permitir el examen de un conjunto de relaciones entre una o más variables independientes, sean estas continuas o discretas, desarrollando una forma de romper las correlaciones observadas en un sistema de ecuaciones matematicas que describan sus hipótesis respecto a relaciones causales. 
+
+### 3. PCA y regresión lineal
+
+El objetivo de este análisis es interpretar los coeficientes de la regresión $\beta$ como combinaciones lineales de las entradas de la matriz $X$ ponderados por los valores de la matriz $\Sigma$, para poder explicar la variable de respuesta $y$. 
+
+### 4. Item response theory
+
+Es un paradigma psicométrico utilizado para diseñar, desarrollar, ensamblar, calificar y analizar evaluaciones. Su principal función es describir la probabilidad de una respuesta como función de un rasgo latente unidimensional de una persona, por ejemplo su habilidad cognitiva, física, conocimiento, actitud.
+
+### 5. Multiple correspondence analysis
+
+Es una extension del análisis de correspondencia simple, para un conjunto grande de variables categóricas; el objetivo es construir tablas de contingencia para las características de nuestras variables, para poder después aplicar el análisis de correspondencias simple a cada una de estas tablas de contingencia. 
+
+### 6. Canonical correlation analysis
+
+El propósito del análisis de correlaciones canónicas es describir la relación estadística que existe entre dos conjuntos de variables $X$ y $Y$. 
+
+### 7. Mixed factor analysis
+
+El análisis factorial mixto se utiliza cuando un conjunto de observaciones se pueden distinguir de acuerdo a variables tanto cualitativas como cuantitativas. Su objetivo es transformar las variables cualitativas para poder aplicar un PCA o transformar las variables cuantitativas para aplica un MCA (generalmente se prefiere la segunda).
+
+### 8. Canonical correlations
