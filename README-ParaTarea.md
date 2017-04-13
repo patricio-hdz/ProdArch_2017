@@ -49,6 +49,12 @@ Materializamos el concepto del significado de cada componente en función de las
 
 Por otro lado la rotación varimax es un método de rotación ortogonal que minimiza el número de varibales qque tienen saturaciones altas en cada factor. Simplifica la interpretación de los factores optimizando la solución por columna. Además, sabemos que las componentes representan nuevos ejes y la proyección de la nube de puntos sobre estos nos sirve para interpretar la relación entre las variables. La rotación varimax consigue que cada componente rotado presente correlaciones más claras con algunas variables, lo cual facilita la interpretabilidad.
 
+## 3. Análisis de correspondencias
+
+### b. Distancias entre perfiles
+
+Para poder medir distancias adecuadamente entre cada perfil de fila, necesitamos medir la diferencia en distribución pesada inversamente proporcional al peso o masa de cada columna. Esto se conoce como distancia chi-cuadrada.
+
 ## 4. Escalamiento multidimensional
 
 ### a. Objetivo del Classical Multidimensional Scaling
