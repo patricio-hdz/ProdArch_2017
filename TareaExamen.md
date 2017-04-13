@@ -11,7 +11,7 @@
 
 \section{Álgebra lineal}
 
-
+#Pregunta 1
 a. Matriz de covarianzas, descomposición espectral y la forma cuadrática
 
 Partiendo de la matriz de covarianzas, para datos centrados, podemos construirla como $\Sigma = X' X$, suponiendo que nuestros datos son centrados. La descomposición espectral de esta matriz $\Sigma$, nos dará información relevante acerca de cómo se comporta esta nube de puntos dentro del plano cartesiano (dado que estamos trabajando con el caso bivariado).
