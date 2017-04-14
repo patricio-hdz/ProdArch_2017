@@ -59,7 +59,6 @@ Para poder medir distancias adecuadamente entre cada perfil de fila, necesitamos
 
 Utilizamos la distancia chi-cuadradada porque nos permite **comparar** situaciones de acuerdo a un criterio establecido por nosotros sin resultados engañosos derivados de cuestiones externas a nosotros. Por ejemplo, supongamos que nos entregan la siguiente tabla de frecuencias para 100 jugadores de basketball:
 
-
 *** Calendario 
 
 | Semana | Fecha      | Meta                                                                       | Output                                                              |
@@ -76,6 +75,8 @@ Utilizamos la distancia chi-cuadradada porque nos permite **comparar** situacion
 |     10 | 09/05/2017 | Reporte, presentación final                                                | Reporte, Presentaciones, Plan de Implementación, Plan de Transición |
 |     11 | 16/05/2017 | Presentación final                                                         | Presentación Final                                                  |
 |     12 | 23/05/2017 | Entrega final                                                              | Entrega del repositorio                                             |
+
+*** TODO Plantillas
 
 De lo anterior supongamos que queremos comparar a aquellos jugadores cuyo peso está entre 70kg. y 90kg., para ello tomamos a aquellos jugadores cuya altura máxima sea de 1.72m. De primera instancia podríamos decir que hay 66% más jugadores que miden hasta 1.7 m y pesan entre 70kg. y 90kg. que los que pesan lo mismo y miden entre 1.71m y 1.72m.
 
