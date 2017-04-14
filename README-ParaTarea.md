@@ -59,7 +59,23 @@ Para poder medir distancias adecuadamente entre cada perfil de fila, necesitamos
 
 Utilizamos la distancia chi-cuadradada porque nos permite **comparar** situaciones de acuerdo a un criterio establecido por nosotros sin resultados engañosos derivados de cuestiones externas a nosotros. Por ejemplo, supongamos que nos entregan la siguiente tabla de frecuencias para 100 jugadores de basketball:
 
-tabla de frecuencias
+
+*** Calendario 
+
+| Semana | Fecha      | Meta                                                                       | Output                                                              |
+|--------+------------+----------------------------------------------------------------------------+---------------------------------------------------------------------|
+|      1 | 21/02/2017 | Exploración de datos                                                       | Estadística descriptiva                                             |
+|      2 | 28/02/2017 | Finalizar /Project scope/ y /data stories/                                 | Project Scope y Data Stories                                        |
+|      3 | 07/03/2017 | Inicio de /Data Pipeline/ y /Mockups/                                      | /Mockups/, Esqueleto de /Data Pipeline/, Inicio de /Technical plan/ |
+|      4 | 14/03/2017 | Iteración 1: /Data pipeline/ de punta a punta, Modelos iniciales           | Código del /Data Pipeline/, Modelos iniciales                       |
+|      5 | 21/03/2017 |                                                                            | Resultados iniciales                                                |
+|      6 | 28/03/2017 | Iteración 2: /Data Pipeline/ de punta a punta, foco en /features/          | Lista de /Features/                                                 |
+|      7 | 04/04/2017 |                                                                            | Interpretación de Modelos                                           |
+|      8 | 18/04/2017 | Iteración 3: /Data Pipeline/ de punta a punta, foco en la evaluación, demo | Resultados                                                          |
+|      9 | 25/04/2017 |                                                                            | UI del demo                                                         |
+|     10 | 09/05/2017 | Reporte, presentación final                                                | Reporte, Presentaciones, Plan de Implementación, Plan de Transición |
+|     11 | 16/05/2017 | Presentación final                                                         | Presentación Final                                                  |
+|     12 | 23/05/2017 | Entrega final                                                              | Entrega del repositorio                                             |
 
 De lo anterior supongamos que queremos comparar a aquellos jugadores cuyo peso está entre 70kg. y 90kg., para ello tomamos a aquellos jugadores cuya altura máxima sea de 1.72m. De primera instancia podríamos decir que hay 66% más jugadores que miden hasta 1.7 m y pesan entre 70kg. y 90kg. que los que pesan lo mismo y miden entre 1.71m y 1.72m.
 
