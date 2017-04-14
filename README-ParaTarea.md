@@ -77,6 +77,15 @@ Medida de parejas simples: Mide la probabilidad de que un individuo elegido al a
 
 Para poder medir distancias adecuadamente entre cada perfil de fila, necesitamos medir la diferencia en distribución pesada inversamente proporcional al peso o masa de cada columna. Esto se conoce como distancia chi-cuadrada.
 
+### c. Se decide medir distancias de la forma $d^2(x,y)=(x-y)'W(x-y)$ con $W$ matriz diagonal con entradas positivas.
+
+Primero veremos el caso más simple: $W$ es la matriz identidad y por lo tanto la métrica dada se reduce a la distania eucldea. Ahora Consideremos a que las variables no estan correlacionadas y por lo tanto su matriz de covarianzas es una matriz diagonal $W$. La distancia que obtenenmos será una norma euclidiana normalizada para cada una de las entradas, i.e. $d^2_{ij}=\frac{(x_i-y_i)^2{\sigma~2}$ y la distancia general será la suma de todas las entradas $ij$. Para el caso general en que las entradas de $W$ con cualquier número real positivo, la métrica dada representa una norma euclídea ponderada por la matriz diagonal $W$ y por lo tanto la medida de media cambiará por esta ponderación incluida en un sentido lineal. Las ponderaciones son constantes por lo que las medidas de varianza y covarianza cambiarán al ser multiplicadas por estas ponderaciones al cuadrado.
+
+Para el caso en que la matriz $W$ representa la matriz inversa de varianzas tenemos que empleando este tipo de distancia solventamos el inconveniente de los efectos de unidades de medida distintas de las variables y obtenemos una distancia que no dependerá de las unidades de medida. Además geométriamente podemos ver que la distancia es invariante frente a transformaciones efectuadas por una matriz $P$ que verifique $P'WP=W$:
+$$d^2(Px,Py)=(Px-Py)'W(Px-Py)=(x-y)'P'WP(x-y)=(x-y)W(x-y)=d^2(x,y)$$
+
+De esta medida podemos obtener la famosa métrica de Mahalanobis en donde la matriz W representará la inversa de la matriz de covarianzas.
+
 ### d. El porqué se usa la distancia chi-cuadrada (ejemplo)
 
 Utilizamos la distancia chi-cuadradada porque nos permite **comparar** situaciones de acuerdo a un criterio establecido por nosotros sin resultados engañosos derivados de cuestiones externas a nosotros. Por ejemplo, supongamos que nos entregan la siguiente tabla de frecuencias para 100 jugadores de basketball:
