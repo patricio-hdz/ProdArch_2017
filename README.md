@@ -24,3 +24,8 @@ http://halweb.uc3m.es/esp/Personal/personas/jmmarin/esp/AMult/tema1am.pdf
 
 Distancias:
 http://84.89.132.1/~michael/stanford/maeb4.pdf
+
+Pregunta 3c.
+http://mccormickml.com/2014/07/22/mahalanobis-distance/
+http://www.ugr.es/~gallardo/pdf/cluster-2.pdf
+https://www.uv.es/ceaces/multivari/cluster/criterios_de_similitud.htm
