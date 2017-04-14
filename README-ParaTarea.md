@@ -51,6 +51,28 @@ Por otro lado la rotación varimax es un método de rotación ortogonal que mini
 
 ## 3. Análisis de correspondencias
 
+### a. Tipos de datos estadísticos y distancias entre ellos.
+
+Booleanos: Representan valores de lógica binaria,  valores que normalmente representan verdadero o falso.
+
+Nominales: Son variables que identifican una categoría o un grupo de pertenencia. Este tipo de variables únicamente nos permite establecer relaciones de igualdad o desigualdad entre los elementos de la variable y no cuentan con un orden lógico. Un ejemplo de este tipo es la variable género(hombre o mujer) en la que categorizamos a cada individuo y la categoria no define un orden.
+
+Ordinales: Son variables cuyo valor representa una categoría o identifican un grupo de pertenencia contando con un orden lógico. Este tipo de variables nos permite establecer relaciones de igualdad/desigualdad y a su vez identificar si una variable es mayor o menor que otra.
+
+Escala de intervalo: Son variables cuyo valor representa magnitud; la distancia entre los números de su escala es igual. Este tipo de datos establecen un orden dentro de sus valores. Un ejemplo de este tipo de variables es la temperatura.
+
+Con escala de razon: Poseen las mismas características que las variables tipo escala de intervalo con la diferencia de que cuentan con un cero absoluto, es decir, el valor cero representa la ausencia total de medida y por lo tanto es posible realizar cualquier operación aritmética y lógica. 
+
+La forma en que medimos distancias entre las variables dependerá del tipo de variable. Para el caso de variables de tipo escala de razón es posible usar la distancia euclídea definida por
+
+$$d(x,y)=\sqrt{(x-y)²}$$
+
+Para el caso de las variables categóricas la forma más común de medir distancias es mediante tablas de contingencia. Con el uso de esta herramiento podemos, por ejemplo, obtener una medida en conjunto con el coeficiente de correlación entre las variables dicotómicas.
+
+Asociado a tablas de contignencia existen las medidas basadas en coincidencias para variables categóricas. Intuitivamente podemos contar el número de veces que las variables toman el mismo valor. Con ello dos variables serían más parecidas si el número de coincidencias es mayor entre los individuos. Como ejemplos de este tipo de medidas tenemos:
+
+Medida de parejas simples: Mide la probabilidad de que un individuo elegido al azar presente una coincidencia de cualquier tipo, pesando de igual forma las coincidencias y las no coincidencias.
+
 ### b. Distancias entre perfiles
 
 Para poder medir distancias adecuadamente entre cada perfil de fila, necesitamos medir la diferencia en distribución pesada inversamente proporcional al peso o masa de cada columna. Esto se conoce como distancia chi-cuadrada.
@@ -91,7 +113,7 @@ plot(x, y, type = "n", xlab = "", ylab = "", asp = 1, axes = FALSE,
 text(x, y, rownames(loc), cex = 0.6)
 ```
 
-Como podemos observar en el mapa, el norte, que debería aparecer en la parte superior del mapa, se encuentra en la parte inferior. El mapa está rotado. Lo anterior, se debe a que el signo de la segunda columna es el opuesto. Multiplicar la segunda columna de la matriz obtenida del MDS clásico nos arrojaría el mapa correcto.
+Como podemos observar en el mapa, el norte, que debería aparecer en la parte superior del mapa, se encuentra en la parte inferior. El mapa está rotado. Lo anterior, se debe a que el signo de la segunda columna es el opuesto. Multiplicar por -1 la segunda columna de la matriz obtenida del MDS clásico nos arrojaría el mapa correcto.
 
 La causa de esto viene de las matrices que obtenemos de la descomposición en valores singulares. De la descomposición de una matriz $A$ como $A = U \Sigma V'$, la matriz $U$ está formada por los eigenvectores ortonormales de $AA'$, mientras que la matriz $V$ está formada por los eigenvectores ortonormales de la matriz $A'A$. Lo que representa esta descomposición es una serie de transformaciones lineales de una matriz; donde las matrices ortogonales $U$ y $V$ preservan el producto de matrices, tales como las rotaciones. Como transformaciones lineales, una matriz ortogonal funciones como una rotación. 
 
