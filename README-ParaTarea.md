@@ -55,6 +55,16 @@ Por otro lado la rotación varimax es un método de rotación ortogonal que mini
 
 Para poder medir distancias adecuadamente entre cada perfil de fila, necesitamos medir la diferencia en distribución pesada inversamente proporcional al peso o masa de cada columna. Esto se conoce como distancia chi-cuadrada.
 
+### d. El porqué se usa la distancia chi-cuadrada (ejemplo)
+
+Utilizamos la distancia chi-cuadradada porque nos permite **comparar** situaciones de acuerdo a un criterio establecido por nosotros sin resultados engañosos derivados de cuestiones externas a nosotros. Por ejemplo, supongamos que nos entregan la siguiente tabla de frecuencias para 100 jugadores de basketball:
+
+tabla de frecuencias
+
+De lo anterior supongamos que queremos comparar a aquellos jugadores cuyo peso está entre 70kg. y 90kg., para ello tomamos a aquellos jugadores cuya altura máxima sea de 1.72m. De primera instancia podríamos decir que hay 66% más jugadores que miden hasta 1.7 m y pesan entre 70kg. y 90kg. que los que pesan lo mismo y miden entre 1.71m y 1.72m.
+
+Notemos que el comparativo anterior es sumamente injusto ya que el rango de altura de 1.71m a 1.72m es tan sólo de 2 cm mientras que el rango de 1.6m a 1.7m es de 10 cm, lo cual lo vuelve mucho más probable de tener casos. La distancia chi-cuadrada nos permite arreglar cuestiones como la anterior ya que la idea es medir "distancias" pero relativas a los universos respectivos de las variables, es decir, en el ejemplo anterior **50%** de los jugadores entre 1.6m y 1.7m de altura pesan entre 70kg. y 90kg., comparado con el mismo **50%** de los jugadores entre 1.71m y 1.72m de altura que pesan entre 70kg. y 90kg.
+
 ## 4. Escalamiento multidimensional
 
 ### a. Objetivo del Classical Multidimensional Scaling
