@@ -1,0 +1,18 @@
+*** Calendario 
+
+| Semana | Fecha      | Meta                                                                       | Output                                                              |
+|--------+------------+----------------------------------------------------------------------------+---------------------------------------------------------------------|
+|      1 | 21/02/2017 | Exploración de datos                                                       | Estadística descriptiva                                             |
+|      2 | 28/02/2017 | Finalizar /Project scope/ y /data stories/                                 | Project Scope y Data Stories                                        |
+|      3 | 07/03/2017 | Inicio de /Data Pipeline/ y /Mockups/                                      | /Mockups/, Esqueleto de /Data Pipeline/, Inicio de /Technical plan/ |
+|      4 | 14/03/2017 | Iteración 1: /Data pipeline/ de punta a punta, Modelos iniciales           | Código del /Data Pipeline/, Modelos iniciales                       |
+|      5 | 21/03/2017 |                                                                            | Resultados iniciales                                                |
+|      6 | 28/03/2017 | Iteración 2: /Data Pipeline/ de punta a punta, foco en /features/          | Lista de /Features/                                                 |
+|      7 | 04/04/2017 |                                                                            | Interpretación de Modelos                                           |
+|      8 | 18/04/2017 | Iteración 3: /Data Pipeline/ de punta a punta, foco en la evaluación, demo | Resultados                                                          |
+|      9 | 25/04/2017 |                                                                            | UI del demo                                                         |
+|     10 | 09/05/2017 | Reporte, presentación final                                                | Reporte, Presentaciones, Plan de Implementación, Plan de Transición |
+|     11 | 16/05/2017 | Presentación final                                                         | Presentación Final                                                  |
+|     12 | 23/05/2017 | Entrega final                                                              | Entrega del repositorio                                             |
+
+*** TODO Plantillas*** TODO Plantillas
