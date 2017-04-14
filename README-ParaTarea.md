@@ -158,4 +158,67 @@ El propósito del análisis de correlaciones canónicas es describir la relació
 
 El análisis factorial mixto se utiliza cuando un conjunto de observaciones se pueden distinguir de acuerdo a variables tanto cualitativas como cuantitativas. Su objetivo es transformar las variables cualitativas para poder aplicar un PCA o transformar las variables cuantitativas para aplica un MCA (generalmente se prefiere la segunda).
 
-### 8. Canonical correlations
+## 6. Análisis del dataset
+
+*Descripción de la base*
+Para practicar lo aprendido hasta el momento en clase, conseguimos un dataset que contiene información de pitchers de baseball. El reto es descubrir si los pitchers con los mejores salarios en realidad son los que demostraron mejor desempeño.
+
+La base cuenta con información estadística relativa al nivel demostrado por los pitchers en distintos años, las variables con las cuales contamos son las siguientes:
+
+playerID: Código para identificar a los jugadores. (ID)
+YearID: Año. (ID)
+Salary: Salario anual. (Continuo)
+stint: Orden de aparicion en la temporada. (Discreto)
+teamID: Equipo al que perteneció. (ID)
+lgID: Liga a la que perteneció. (ID)
+W: Juegos ganados. (Discreto)
+L: Juegos perdidos. (Discreto)
+G: Juegos jugados. (Discreto)
+GS: Juego iniciados. (Discreto)
+CG: Juego en los que pitcho todo el partido. (Discreto)
+SHO: Shutouts. (Discreto)
+SV: Juegos salvados. (Continua)
+IPOuts: Cantidad de outs pitchados (Número de innings * 3). (Continua)
+H: Hits recibidos. (Continua)
+ER: Carreras permitidas. (Continua)
+HR: Home runs permitidos. (Continua)
+BB: Bases por bola otorgadas. (Continua)
+SO: Ponches otorgados. (Continua)
+BAOpp: Promedio de bateo de los oponentes. (Continua)
+ERA: Carreras permitidas en promedio por juego. (Continua)
+IBB: Bases por bolas intencionales otorgadas. (Discreta)
+WP: Wild pitches lanzados. (Discreta)
+HBP: Bateadores golpeados. (Discreta)
+BK: Balks. (Discreta)
+BFP: Cantidad de oponentes enfrentados. (Continua)
+GF: Juegos terminados. (Continua)
+R: Carreras permitidas. (Continua)
+SH: Sacrificios por bateadores enfrentados. (Discreta)
+SF: Flies de sacrificio. (Discreta)
+GIDP: Rodados para doble-play logrados. (Discreta)
+
+*Retos desde el punto de vista del análisis multivariado*
+
+- Trabajar con distintos tipos de datos.
+- La base de datos tiene una evolución a través del tiempo, el reto será encontrar medidas de comparación atemporales.
+- Encontrar la estructura de correlación entre las variables de desempeño y el salario.
+
+*Hipótesis a comprobar y métodos a utilizar*
+
+- Encontrar agrupaciones de métricas de desempeño. Para esto proponemos utilizar mixed factor analysis.
+
+- Un mejor desempeño se traduce en un mejor nivel salarial. Suponiendo que a través de técnicas de reducción de dimensionalidad contemos YA con variables independientes, podemos utilizar regresión para predecir los salarios.
+
+*Selección de técnicas y posibles resultados*
+
+- Para encontrar agrupaciones de desempeño proponemos utilizar el mixed factor analysis ya que contamos con variables tanto categóricas como continuas. Lo que esperamos obtener son componentes que nos indiquen una clase de "scores" de desempeño dónde podamos evaluar a un jugador con menos métricas y en determinado momento poder recomendar cuáles son las "mejores" medidas de desempeño.
+
+- Para evaluar si el desempeño tiene un efecto directo en el salario de los jugadores, proponemos utilizar ya sea PCA o MCA primero para reducir dimensionalidad porque, en base a las variables que tenemos, creemos que existen varias que representan simples transformaciones de otras y por lo tanto una "componente" puede ser una medida resumen.
+   a. Posteriormente, al ya contar con componentes, en teoría, podemos llevar a cabo una regresión sin problemas de multi-colinealidad. 
+   b. Podríamos utilizar un método como SVM para clasificar a los jugadores de acuerdo a su desempeño y de esta manera crear perfiles salariales para cada clasificación.
+   c. Podríamos utilizar métodos de clustering para agrupar a los jugadores y con ello obtener la distribución de la liga de acuerdo a los desempeños.
+
+
+
+
+
