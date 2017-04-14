@@ -27,5 +27,10 @@ http://84.89.132.1/~michael/stanford/maeb4.pdf
 
 Pregunta 3c.
 http://mccormickml.com/2014/07/22/mahalanobis-distance/
+
 http://www.ugr.es/~gallardo/pdf/cluster-2.pdf
+
 https://www.uv.es/ceaces/multivari/cluster/criterios_de_similitud.htm
+
+Paper puntos influyentes para Adolfo:
+https://www.researchgate.net/post/In_an_agent_network_or_graph_how_can_I_find_the_most_influential_node_to_drive_the_whole_network_to_a_certain_direction_opinion_or_idea
