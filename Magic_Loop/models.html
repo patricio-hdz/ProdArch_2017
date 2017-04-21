@@ -1,0 +1,4133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Modelado</title>
+<meta name="author" content="(Adolfo De Unánue)"/>
+<meta name="description" content=""/>
+<meta name="keywords" content="data science, machine learning, data product, modeling, pipelines"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/white.css" id="theme"/>
+
+<link rel="stylesheet" href="../resources/css/itam.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/css/zenburn.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://cdn.jsdelivr.net/reveal.js/3.0.0/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<meta name="description" content="Introducción a la Ciencia de Datos: Modelos">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">Modelado</h1><h2 class="author">Adolfo De Unánue</h2><h2 class="email"><a href="mailto:adolfo.deunanue@itam.mx">adolfo.deunanue@itam.mx</a></h2><h2 class="date">20 de octubre de 2016</h2><p class="date">Created: 2016-11-23 mié 18:55</p>
+</section>
+<section id="table-of-contents">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#/slide-org2546bce">Ambiente</a></li>
+<li><a href="#/slide-orgbe438f8"><code>Scikit-learn</code></a></li>
+<li><a href="#/slide-org1ff7865">Procedimiento</a></li>
+<li><a href="#/slide-org2ede372">Transformaciones</a></li>
+<li><a href="#/slide-org5ee86c4">Feature Engineering</a></li>
+<li><a href="#/slide-org7235338">Evaluación <i>Off-line</i></a></li>
+<li><a href="#/slide-org5b169ee">Selección de modelos</a></li>
+<li><a href="#/slide-orga3adbd2"><i>Hyperparameter tuning</i></a></li>
+<li><a href="#/slide-org9fbb496"><i>Pipeline</i> de Modelos</a></li>
+<li><a href="#/slide-org16ffb6f">Producción</a></li>
+<li><a href="#/slide-org33b7bb6">Evaluación <i>On-line</i></a></li>
+<li><a href="#/slide-orgb939c2a">¿Por qué de todo esto?</a></li>
+<li><a href="#/slide-org3436a9b">¿Qué nos faltó de cubrir?</a></li>
+<li><a href="#/slide-orge42f072">Conclusiones</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+
+<section>
+<section id="slide-org2546bce">
+<h2 id="org2546bce">Ambiente</h2>
+<div class="outline-text-2" id="text-org2546bce">
+</div></section>
+<section id="slide-org0bf65c3">
+<h3 id="org0bf65c3">Ambiente</h3>
+<div class="org-src-container">
+
+<pre><code class="emacs-lisp" >(princ (concat
+        (format "Emacs version: %s\n"
+                (emacs-version))
+        (format "org version: %s\n"
+                (org-version))))
+</code></pre>
+</div>
+
+<pre class="example">
+Emacs version: GNU Emacs 26.0.50.3 (x86_64-pc-linux-gnu, GTK+ Version 3.20.8)
+ of 2016-11-15
+org version: 9.0
+</pre>
+
+
+</section>
+<section>
+
+<p>
+<b>NOTA</b>: Todo lo que sigue, presupone que estás trabajando en la carpeta de la clase, i.e. <code>intro-to-ds</code>
+</p>
+
+</section>
+<section>
+
+
+<div class="org-src-container">
+
+<pre id="python-version"><code class="shell" >python --version
+</code></pre>
+</div>
+
+<pre class="example">
+Python 3.5.2
+</pre>
+
+
+</section>
+<section>
+
+
+<p>
+Debido a un <i>bug</i> estúpido de <code>pip</code>
+</p>
+
+<p>
+Primero instala <code>Cython</code>
+</p>
+
+<pre class="example">
+pip install Cython
+</pre>
+
+
+<p>
+Luego instala <code>feather</code>
+</p>
+
+<pre class="example">
+pip install feather-format
+</pre>
+
+</section>
+<section>
+
+<p>
+Y ahora el resto de los paquetes
+</p>
+
+<pre class="example">
+pip install -r ../requirements.txt
+</pre>
+
+
+</section>
+<section>
+
+<p>
+Si todo salió bien deberías de poder hacer lo que sigue:
+</p>
+
+<p>
+Abre tu <code>ipython</code>
+</p>
+
+<pre class="example">
+$ ipython
+Python 3.5.2 (default, Aug 16 2016, 12:53:54)
+Type "copyright", "credits" or "license" for more information.
+
+IPython 5.1.0 -- An enhanced Interactive Python.
+?         -&gt; Introduction and overview of IPython's features.
+%quickref -&gt; Quick reference.
+help      -&gt; Python's own help system.
+object?   -&gt; Details about 'object', use 'object??' for extra details.
+
+In [1]:
+</pre>
+
+</section>
+<section>
+
+<p>
+Teclea lo siguiente
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >%matplotlib inline
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+## Paquete para mejorar la estética de matplolib
+import seaborn as sns
+sns.set()
+</code></pre>
+</div>
+
+<p>
+Si todo funcionó bien, prosigue.
+</p>
+
+<p>
+En <b>Rstudio</b>  teclea lo siguiente
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="R" >library(feather)
+write_feather(x = iris, path='iris.feather')
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<p>
+Y en la terminal de <code>ipython</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >import feather
+iris_df = feather.read_dataframe('iris.feather')
+iris_df.head()
+</code></pre>
+</div>
+
+<pre class="example">
+   Sepal.Length  Sepal.Width  Petal.Length  Petal.Width Species
+0           5.1          3.5           1.4          0.2  setosa
+1           4.9          3.0           1.4          0.2  setosa
+2           4.7          3.2           1.3          0.2  setosa
+3           4.6          3.1           1.5          0.2  setosa
+4           5.0          3.6           1.4          0.2  setosa
+</pre>
+
+
+<p>
+Si llegaste hasta aquí, <b>felicidades</b> <code>:D</code>
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgbe438f8">
+<h2 id="orgbe438f8"><code>Scikit-learn</code></h2>
+<div class="outline-text-2" id="text-orgbe438f8">
+</div></section>
+<section id="slide-org29599ba">
+<h3 id="org29599ba"><code>Scikit-learn</code></h3>
+<ul>
+<li>Implementación de muchos algoritmos de aprendizaje de máquina</li>
+<li><code>API</code> limpia y uniforme</li>
+
+</ul>
+
+</section>
+<section id="slide-org5ff91da">
+<h3 id="org5ff91da">¿Cómo represento los datos?</h3>
+<ul>
+<li>Para muchos algoritmos de <b>Aprendizaje de Máquina</b> los datos deben de venir en
+una tabla 2D y de preferencia ser <i>tidy</i>
+<ul>
+<li>Aunque como vimos antes no necesariamente es lo óptimo</li>
+
+</ul></li>
+
+<li>En <code>scikit-learn</code> esta tabla será numérica y se le llamará  <i>features matrix</i>
+regularmente representada por \(X\), con dimensiones <code>[ num_samples, num_features ]</code></li>
+
+<li>El <i>sample</i> representa un individuo: Una persona, una imagen, un documento, vídeo, etc,</li>
+
+</ul>
+
+
+<ul>
+<li>También (en el caso supervisado) se tiene un arreglo (<i>array</i>)
+llamado <i>target</i> o <i>label</i>, que se representará por \(y\)</li>
+
+<li>\(y\)  regularmente es unidimensional, con una longitud de <code>[num_samples,]</code></li>
+
+<li>\(y\)  puede ser numérico o discreto.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org0069110">
+<h4 id="org0069110">Ejemplo</h4>
+<div class="org-src-container">
+
+<pre><code class="ipython" >iris = sns.load_dataset('iris')
+X_iris = iris.drop('species', axis=1)
+print(X_iris.shape)
+</code></pre>
+</div>
+
+<pre class="example">
+(150, 4)
+</pre>
+
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >y_iris = iris['species']
+print(y_iris.shape)
+</code></pre>
+</div>
+
+<pre class="example">
+(150,)
+</pre>
+
+
+</section>
+<section id="slide-orge46f2e8">
+<h3 id="orge46f2e8"><code>Estimator</code> <code>API</code></h3>
+<div class="outline-text-3" id="text-orge46f2e8">
+</div></section>
+<section id="slide-orge92db95">
+<h4 id="orge92db95">Filosofía</h4>
+<p>
+Lo que sigue está basado en el artículo
+<a href="https://arxiv.org/abs/1309.0238">API design for machine learning software: experiences from the scikit-learn project</a>
+de <i>Buitinck et al</i>.
+</p>
+
+</section>
+<section>
+
+<p>
+La <code>API</code> de <code>scikit-learn</code> se diseñó guiándose en los siguientes principios:
+</p>
+
+<ul>
+<li><b>Consistencia</b>: Todos los objetos comparten una interfaz, con buena documentación</li>
+<li><b>Inspección</b>: Todos los parámetros son públicos</li>
+<li><b>Jerarquía de objetos limitada</b>: Los algoritmos son clases de <code>Python</code> ,
+los <i>datasets</i> son arreglos de  <code>numpy</code>, o
+<i>data frames</i> de <code>pandas</code>  o matrices <i>sparse</i> de <code>scipy</code>, los parámetros son cadenas.</li>
+<li><b>Composición</b>. Esto tendrá sentido cuando lleguemos a <code>Pipelines</code></li>
+<li><b>Valores por omisión</b>: Cuando haya valores por especificar en los modelos,
+la API definirá valores por omisión apropiados.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-orge1cc45e">
+<h4 id="orge1cc45e">Manual de supervivencia</h4>
+<ol>
+<li>Escoje un  modelo</li>
+<li>Escoje los <i>hiper-parámetros</i> del modelo</li>
+<li>Prepara el <i>dataset</i> en <i>features matrix</i> y el vector <i>target</i></li>
+<li>Divide el <i>dataset</i> en <i>train</i> y <i>test</i></li>
+<li>Aplica el algoritmo a tus datos de entrenamiento</li>
+<li>Aplica el algoritmo a tus datos de prueba</li>
+<li>Evalúa el modelo</li>
+<li>Aplica el modelo en nuevos datos</li>
+
+</ol>
+
+
+</section>
+<section>
+
+<p>
+Generamos un <i>dataset</i> de juguete
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >rng = np.random.RandomState(5432)
+x = 10 * rng.rand(50)
+y = 2 * x  - 1 + rng.randn(50)
+plt.scatter(x,y)
+</code></pre>
+</div>
+
+
+<div class="figure">
+<p><img src="scikit-learn-example-data.png" alt="scikit-learn-example-data.png" />
+</p>
+</div>
+
+
+</section>
+<section id="slide-org0f9e6ae">
+<h4 id="org0f9e6ae">Ejemplo: <i>Supervised Learning</i></h4>
+<div class="org-src-container">
+
+<pre><code class="ipython" >## 1.  Escoje un modelo
+from sklearn.linear_model import LinearRegression
+
+## 2. Escoje los hiper-parametros
+## Ve la documentacion:
+## ?LinearRegression
+modelo = LinearRegression(fit_intercept = True)
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >## 3.Prepara el /dataset/ en /features matrix/ y el vector /target/
+## x no es una matriz, es un vector, i.e. su shape es (50,)
+X = x[:, np.newaxis]
+print(X.shape)
+</code></pre>
+</div>
+
+<pre class="example">
+(50, 1)
+</pre>
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >## 4. Divide el dataset en train y test
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1)
+</code></pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >## 5. Aplica el algoritmo a tu datos de entrenamiento
+modelo.fit(X_train, y_train)
+
+print("Coeficientes: {}".format(modelo.coef_))
+
+print("Interceptor: {}".format(modelo.intercept_))
+</code></pre>
+</div>
+
+</section>
+<section>
+
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >## 6. Aplica el algoritmo a tus datos de prueba
+y_from_model = modelo.predict(X_test)
+
+## 7. Evalúa el modelo
+modelo.score(X_test, y_test) ## Devuelve el R^2
+</code></pre>
+</div>
+
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >## 8. Aplica el modelo en nuevos datos
+x_new = np.linspace(-1, 11)
+
+X_new = x_new[:, np.newaxis]
+y_new = modelo.predict(X_new)
+## Graficamos el modelo y los datos
+plt.scatter(x, y)
+plt.plot(X_new, y_new, c='green')
+</code></pre>
+</div>
+
+
+</section>
+<section id="slide-org57883c8">
+<h4 id="org57883c8">Ejemplo: <i>Transformers</i></h4>
+<div class="org-src-container">
+
+<pre><code class="ipython" >from sklearn.datasets import load_boston
+from sklearn.model_selection import train_test_split
+
+boston = load_boston()
+
+X_train, X_test, y_train, y_test = train_test_split(boston.data, boston.target)
+
+print("Media: %s " % X_train.mean(axis=0))
+print("Desviacion estandar: %s " % X_train.std(axis=0))
+</code></pre>
+</div>
+
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+
+scaler.fit(X_train)
+
+X_scaled = scaler.transform(X_train)
+
+print("Media: %s " % X_scaled.mean(axis=0))
+print("Desviacion estandar: %s " % X_scaled.std(axis=0))
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org5be56f9">
+<h4 id="org5be56f9">Ejemplo: Reducción de dimensiones</h4>
+<div class="org-src-container">
+
+<pre><code class="ipython" >from sklearn.datasets import make_s_curve
+
+X, color= make_s_curve(n_samples=1000)
+
+from mpl_toolkits.mplot3d import Axes3D
+
+plt.close()
+
+fig = plt.figure()
+
+ax = plt.axes(projection = '3d')
+
+ax.scatter3D(X[:,0], X[:,1], X[:,2], c=color, cmap=plt.cm.Spectral)
+ax.view_init(10, -60)
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >## Linear transformers en el paquete decomposition
+from sklearn.decomposition import PCA
+pca = PCA(n_components = 2).fit(X)
+X_pca = pca.transform(X)
+plt.close()
+plt.scatter(X_pca[:,0], X_pca[:,1], c=color, cmap=plt.cm.Spectral)
+</code></pre>
+</div>
+
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >## No linear transformers en el paquete  manifold
+from sklearn.manifold import Isomap
+iso = Isomap(n_neighbors = 20)
+iso.fit(X)
+X_iso = iso.transform(X)
+
+plt.close()
+plt.scatter(X_iso[:,0], X_iso[:,1], c=color, cmap=plt.cm.Spectral)
+
+plt.savefig('../images/s-figure-isomap.png')
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >from sklearn.manifold import TSNE
+
+tsne = TSNE()
+
+## t-sne no tiene una API estándar :/
+## Esto falla:
+## tsne.fit(X)
+## X_tsne = tsne.transform(X)
+## BOOOM!!!
+## Se puede arreglar con:
+## X_tsne = tsne.embedding_
+
+X_tsne = tsne.fit_transform(X)
+
+plt.close()
+plt.scatter(X_tsne[:,0], X_tsne[:,1], c=color, cmap=plt.cm.Spectral)
+
+plt.savefig('../images/s-figure-tsne.png')
+</code></pre>
+</div>
+
+
+</section>
+<section id="slide-orgc1e707f">
+<h4 id="orgc1e707f">Ejemplo final: Dígitos</h4>
+<div class="org-src-container">
+
+<pre id="data-includes"><code class="ipython" >from sklearn.datasets import load_digits
+digits = load_digits()
+
+digits.images.shape
+
+import matplotlib.pyplot as plt
+
+fig, axes = plt.subplots(10,10, figsize=(8,8),
+                         subplot_kw={'xticks':[], 'yticks':[]},
+                         gridspec_kw=dict(hspace=0.1, wspace=0.1))
+
+for i, ax in enumerate(axes.flat):
+    ax.imshow(digits.images[i], cmap='binary', interpolation='nearest')
+    ax.text(0.05, 0.05, str(digits.target[i]),
+            transform=ax.transAxes, color='green')
+</code></pre>
+</div>
+
+</section>
+<section>
+
+
+
+<div class="org-src-container">
+
+<pre id="data-shape"><code class="ipython" >X = digits.data
+print("Dimensiones de los features: {}".format(X.shape))
+
+y = digits.target
+print("Dimensiones del target: {}".format(y.shape))
+</code></pre>
+</div>
+
+
+</section>
+<section>
+
+
+<div class="org-src-container">
+
+<pre id="tsne-viz"><code class="ipython" >from sklearn.manifold import TSNE
+
+tsne = TSNE()
+
+X_projected = tsne.fit_transform(X)
+
+X_projected.shape
+
+plt.close()
+
+plt.scatter(X_projected[:,0], X_projected[:,1], c=y,
+            edgecolor = 'none',
+            alpha = 0.5,
+            cmap = plt.cm.get_cmap('spectral', 10))
+
+plt.colorbar(label = 'etiqueta', ticks = range(10))
+
+plt.clim(-0.5, 9.5)
+</code></pre>
+</div>
+
+</section>
+<section>
+
+
+<div class="org-src-container">
+
+<pre id="rf-classification"><code class="ipython" >from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+from sklearn.ensemble import RandomForestClassifier
+model = RandomForestClassifier(n_estimators=1000)
+model.fit(X_train, y_train)
+y_model = model.predict(X_test)
+
+
+## Accuracy
+from sklearn.metrics import accuracy_score
+print("Accuracy: {}".format(accuracy_score(y_test, y_model)))
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre id="rf-evaluation-per-class"><code class="ipython" >## Métricas clasicas de Clasificadores
+from sklearn import metrics
+print(metrics.classification_report(y_model, y_test))
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre id="rf-confussion-matrix"><code class="ipython" >## Matriz de confusión
+from sklearn.metrics import confusion_matrix
+
+mat = confusion_matrix(y_test, y_model)
+
+plt.close()
+
+sns.heatmap(mat, square = True, annot = True, cbar = False)
+plt.xlabel('Valor predicho')
+plt.ylabel('Valor real')
+</code></pre>
+</div>
+
+</section>
+<section>
+
+
+<div class="org-src-container">
+
+<pre id="data-predicted-labels"><code class="ipython" >## O visualmente
+
+plt.close()
+
+fig, axes = plt.subplots(10,10, figsize=(8,8),
+                         subplot_kw={'xticks':[], 'yticks':[]},
+                         gridspec_kw=dict(hspace=0.1, wspace=0.1))
+
+for i, ax in enumerate(axes.flat):
+    ax.imshow(X_test.reshape(450,8,8)[i], cmap='binary', interpolation='nearest')
+    ax.text(0.05, 0.05, str(y_model[i]),
+            transform=ax.transAxes,
+            color='green' if (y_test[i] == y_model[i]) else 'red')
+</code></pre>
+</div>
+
+</section>
+<section>
+
+</section>
+<section>
+
+<p>
+<b>Ejercicio</b>: Inténtalo con <code>PCA</code>  e <code>Isomap</code> ¿Cuél divide mejor este <i>dataset</i>?
+</p>
+
+<p>
+<b>Ejercicio</b>: Cambia los hiper-parámetros del <code>RandomForestClassifier</code>,
+             primero disminuye los arboles a 10,
+             y luego los <i>features</i> a considerar a <code>sqrt</code>. ¿Cual resulta mejor?
+</p>
+
+<p>
+<b>Ejercicio</b>: Cambia de clasificador a <code>GaussianNB</code> ¿Cual resulta mejor para este <i>dataset</i>?
+</p>
+
+
+
+
+</section>
+<section id="slide-org75fa174">
+<h4 id="org75fa174">Resumen de la API</h4>
+<p>
+Para todos  los estimadores: <b><code>model.fit(X_train, [y_train])</code></b>
+</p>
+
+<p>
+Por tipo:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-center" />
+
+<col  class="org-center" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-center"><code>model.predict(X_test)</code></th>
+<th scope="col" class="org-center"><code>model.transform(X_test)</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-center">Clasificacion</td>
+<td class="org-center">Preprocesamiento</td>
+</tr>
+
+<tr>
+<td class="org-center">Regresión</td>
+<td class="org-center">Reducción de dimensiones</td>
+</tr>
+
+<tr>
+<td class="org-center"><i>Clustering</i></td>
+<td class="org-center"><i>Feature Extraction</i></td>
+</tr>
+
+<tr>
+<td class="org-center">&#xa0;</td>
+<td class="org-center"><i>Feature Selection</i></td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org1ff7865">
+<h2 id="org1ff7865">Procedimiento</h2>
+<div class="outline-text-2" id="text-org1ff7865">
+</div></section>
+<section id="slide-org855307f">
+<h3 id="org855307f">Versión simplificada</h3>
+
+<div class="figure">
+<p><img src="../images/proceso_simple.jpg" alt="proceso_simple.jpg" width="800px" height="600px" />
+</p>
+</div>
+
+</section>
+<section id="slide-org6bbfbde">
+<h3 id="org6bbfbde">Versión completa</h3>
+
+<div class="figure">
+<p><img src="../images/proceso_detallado.jpg" alt="proceso_detallado.jpg" width="800px" height="600px" />
+</p>
+</div>
+
+
+</section>
+<section id="slide-org5f218af">
+<h3 id="org5f218af">Procedimiento</h3>
+<ul>
+<li>Mapeamos el problema de negocio a una técnica de modelado.</li>
+
+<li>Dividimos (por lo menos) a los datos en dos: <i>training</i> y <i>testing</i>
+<ul>
+<li>Aunque ve más adelante</li>
+
+</ul></li>
+
+<li>Esto lo hacemos para hacer pruebas en el modelo + datos:
+<ul>
+<li>Evaluación del modelo</li>
+<li>Validación del modelo</li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section>
+
+<ul>
+<li>Evaluación del modelo
+<ul>
+<li>Cuantificación del desempeño del modelo.</li>
+<li>Encontrar medidas que sean apropiadas para la meta de negocio y
+para la técnica que estamos usando.</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+
+<ul>
+<li>Validación del modelo
+<ul>
+<li>Procedimiento para verificar (con una medida de certidumbre) de que el
+modelo se comportará en producción tan bien como lo hizo en entrenamiento.</li>
+<li>Un problema muy grande para este procedimiento pueden ser:
+<ul>
+<li>No hay suficientes datos para tener un conjunto de <i>training data</i>.</li>
+<li>Los datos de entrenamiento no tienen la suficiente variedad comparada con producción.</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org34d20b0">
+<h3 id="org34d20b0">Clasificación</h3>
+<ul>
+<li>¿Qué tipo es?</li>
+
+<li>Pertenece a las técnicas de <i>supervised learning</i></li>
+
+<li>Crear un conjunto de datos para entrenamiento es muy caro (en <code>$</code>),
+a este proceso se le conoce como etiquetado</li>
+
+</ul>
+
+
+</section>
+<section>
+
+<p>
+Algunos ejemplos
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Técnica</th>
+<th scope="col" class="org-left">Notas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Naïve Bayes</td>
+<td class="org-left">Muchas variables de entrada, categóricas con muchos niveles, clasificación de texto</td>
+</tr>
+
+<tr>
+<td class="org-left">Árboles de decisión</td>
+<td class="org-left">Variables de entrada interactúan con la salida de manera <code>if-then</code>. Las variables de entrada son redundantes o están correlacionadas.</td>
+</tr>
+
+<tr>
+<td class="org-left">Regresión Logística</td>
+<td class="org-left">Estimar las probabilidades de pertenencia a la clase de salida. Quieres conocer el impacto relativo de las variables de entrada a las de salida.</td>
+</tr>
+
+<tr>
+<td class="org-left">SVM</td>
+<td class="org-left">Muchas variables de entrada que interactuan de maneras complicadas o no-lineales. Hace pocas suposiciones sobre la distribución de las variables, lo cual lo hace bueno cuando no los datos de entrenamiento no sean tan representativos de lo que pasa en producción.</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org5b0fcc4">
+<h3 id="org5b0fcc4">Regresión/Scoring</h3>
+<ul>
+<li>¿Cuánto?
+<ul>
+<li>Ejemplo: ¿Cuánto van a aumentar las ventas por esta campaña?</li>
+<li>Detección de fraude, puede ser considerado <i>scoring</i> si
+tratas de estimar la probabilidad de que una transacción en
+particular sea fraudulenta.</li>
+
+</ul></li>
+
+<li>Ejemplos son la regresión logística y la regresión lineal.</li>
+
+</ul>
+
+</section>
+<section id="slide-orga76904f">
+<h3 id="orga76904f">Cuando no hay variable de salida <i>target</i></h3>
+<ul>
+<li>Pertenece a las técnicas de <i>unsupervised learning</i></li>
+
+<li>En lugar de predecir las variables de salida usando las variables de entrada,
+el objetivo es descubir similitudes y relaciones en los datos.</li>
+
+<li>Ejemplos:
+<ul>
+<li>Agrupamiento por <code>k-means</code>
+<ul>
+<li>Segmentar <code>clientes</code> por patrones similares de compra.</li>
+
+</ul></li>
+<li>Algoritmo <code>apriori</code>.
+<ul>
+<li>Segmentar <code>productos</code> que se compran juntos.</li>
+
+</ul></li>
+<li>Vecinos cercanos.
+<ul>
+<li>Decir algo sobre el punto <code>p</code> respecto a puntos que más se parecen a <code>p</code>.</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org2ede372">
+<h2 id="org2ede372">Transformaciones</h2>
+<div class="outline-text-2" id="text-org2ede372">
+</div></section>
+<section id="slide-orgcfd2422">
+<h3 id="orgcfd2422">Variables Categóricas</h3>
+<ul>
+<li>Las dos representaciones más usadas para variables categóricas
+son <i>one-hot-encoding</i> (<b>Machine Learning</b>) o <i>dummy variables</i>
+(<b>Estadística</b>)</li>
+
+<li>Es importante verificar que la columna contenga realmente datos
+categóricos (y no por ejemplo texto capturado por humanos)</li>
+
+</ul>
+
+</section>
+<section id="slide-orga869a53">
+<h4 id="orga869a53"><i>One-hot-encoding</i></h4>
+<ul>
+<li><i>One-hot-encoding</i> codifica la variable categórica con \(k\) niveles
+en \(k\) <i>features</i></li>
+
+</ul>
+
+<table id="org88495fa" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+<caption class="t-above"><span class="table-number">Table 1:</span> Ejemplo de representación con <i>one-hot-encoding</i></caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">var</th>
+<th scope="col" class="org-right">var_A</th>
+<th scope="col" class="org-right">var_B</th>
+<th scope="col" class="org-right">var_C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">A</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">B</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">C</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-left">A</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-orgbbc386d">
+<h4 id="orgbbc386d"><i>Dummy variables</i></h4>
+<ul>
+<li><i>Dummy variables</i> codifica la variable categórica con \(k\) niveles en
+\(k-1\) <i>features</i> (el último representado por ceros)</li>
+
+</ul>
+
+<table id="org40013ec" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 2:</span> Ejemplo de representación con <i>dummy variables</i></caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">var</th>
+<th scope="col" class="org-right">var_A</th>
+<th scope="col" class="org-right">var_B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">A</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">B</td>
+<td class="org-right">0</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-left">C</td>
+<td class="org-right">0</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">A</td>
+<td class="org-right">1</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-orge299c1a">
+<h4 id="orge299c1a">Ejemplo</h4>
+<div class="org-src-container">
+
+<pre><code class="ipython" >import feather
+
+iris_df = feather.read_dataframe('iris.feather')
+
+iris_df.head()
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<ul class="org-ul"><li><a id="org90348bc"></a>Usando Pandas<br  /><div class="org-src-container">
+
+<pre><code class="ipython" >## Usando pandas
+print(pd.get_dummies(iris_df['Species']).head())
+</code></pre>
+</div>
+
+</section>
+<section></li>
+
+<li><a id="orgd3253e2"></a>Usando <code>Scikitlearn</code><br  /><div class="org-src-container">
+
+<pre><code class="ipython" >## Usando OneHotEncoder
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
+
+label_encoder = LabelEncoder()  ## Para convertir a enteros
+one_hot_encoder = OneHotEncoder()
+
+## Convertirmos a enteros, i.e. setosa -> 0, etc
+species = label_encoder.fit_transform(iris_df['Species'])
+
+## Ya no se le pueden pasar vectores (arreglos 1D) a los preprocesadores
+species = species[:, np.newaxis]
+
+## Debemos invocar todense() ya que OneHotEncoder devuelve una matriz rala
+## La otra opción es OneHotEncoder(sparce=False)
+species_one_hot = one_hot_encoder.fit_transform(species).todense()
+print(species_one_hot[:5,:])
+</code></pre>
+</div></li></ul>
+
+</section>
+<section id="slide-orgf453a03">
+<h3 id="orgf453a03"><i>Binning</i></h3>
+<ul>
+<li>Transformar variables numéricas a categóricas.</li>
+
+<li>Pueden ayudar a construir modelos más complejos con regresiones
+lineales (i.e. aumentan su expresividad)</li>
+
+<li>Los árboles de decisión lo hacen automáticamente, por lo que no se
+ven beneficiados de este tipo de transformaciones</li>
+
+<li>En <code>python</code> se realiza con la función <code>np.digitize</code></li>
+
+</ul>
+
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org5ee86c4">
+<h2 id="org5ee86c4">Feature Engineering</h2>
+<div class="outline-text-2" id="text-org5ee86c4">
+</div></section>
+<section id="slide-orgacd0e6c">
+<h3 id="orgacd0e6c">¿Qué es?</h3>
+<ul>
+<li>Es el proceso de determinar que variables productivas contribuyen mejor al poder predictivo del algoritmo.</li>
+<li><b><b>FE</b></b> es, quizá, la parte más importante del proceso de minería de datos.
+<ul>
+<li>Con buenas variables, un modelo simple puede ser mejor que un modelo complicado con malas variables.</li>
+
+</ul></li>
+
+<li>Es el elemento humano en el modelado: El entendimiento de los datos, más la intuición y la creatividad, hacen toda la diferencia.</li>
+
+<li>Es más un arte que una ciencia.</li>
+
+<li>Regularmente es un proceso iterativo con el EDA.</li>
+
+<li>Un <b>domain expert</b> puede ser de mucha utilidad en esta etapa.</li>
+
+<li><i>Feature Learning</i> es lo que hace <i>Deep Learning</i> y no se verá en
+este curso</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org1f2c2ab">
+<h3 id="org1f2c2ab">La maldición de la dimensionalidad</h3>
+<ul>
+<li>El número de combinaciones  valores-variables puede ser muy grande en un problema típico de DM.</li>
+
+<li>Sea \(n\) el número de variables  y sea \(a_i\) el número de posibles valores de la variable \(i\), \(1 \leq i \leq n\). El número de combinaciones está dado por</li>
+
+</ul>
+
+<p>
+\[
+m = \Pi_i^n a_i
+\]
+</p>
+
+<ul>
+<li>Para \(100\) variables con \(10\) valores cada uno,  \(m\) es mayor que el número de partículas en el Universo (\(\sim 10^{80}\)).</li>
+
+<li>Posibles soluciones:
+<ul>
+<li>Reducir el espacio de búsqueda.</li>
+<li>Realizar búsqueda inteligente (heurística, GA, etc.)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org9b2e854">
+<h3 id="org9b2e854"><i>Feature Generation</i></h3>
+<div class="outline-text-3" id="text-org9b2e854">
+</div></section>
+<section id="slide-orga947870">
+<h4 id="orga947870">Proceso Manual</h4>
+<ul>
+<li><i>Brainstorming</i>
+<ul>
+<li>No juzguen en esta etapa</li>
+<li>Permitan y promuevan ideas muy locas.</li>
+<li>Construyan en las ideas de otros</li>
+<li>No divaguen</li>
+<li>No mantengan conversaciones en paralelo</li>
+<li>Sean visuales</li>
+<li>Vayan por cantidad, la calidad se verá luego</li>
+<li>Otros consejos se puden consultar <a href="http://www.openideo.com/fieldnotes/openideo-team-notes/sevent-tips-on-better-brainstorming">aquí</a></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org76d0f30">
+<h4 id="org76d0f30">Proceso Manual (continuación)</h4>
+<ul>
+<li>Decidir que <i>features</i> crear
+<ul>
+<li>No hay tiempo infinito</li>
+
+</ul></li>
+
+<li>Crear esos <i>features</i></li>
+
+<li>Estudiar el impacto de los <i>features</i> en el modelo</li>
+
+<li>Iterar</li>
+
+</ul>
+
+</section>
+<section id="slide-org556ef60">
+<h4 id="org556ef60">Proceso Automatizado</h4>
+<ul>
+<li>Interacción multiplicativa
+<ul>
+<li>\(C = A \cdot B\)</li>
+<li>Hacer para todas las posibles combinaciones.</li>
+<li>Es importante mencionar que estas nuevas variables benefician
+mucho a los regresores lineales, pero no afectan mucho a árboles
+de decisión (e.g. el Random Forest)</li>
+
+</ul></li>
+
+<li>Interacción de razón
+<ul>
+<li>\(C = A / B\)</li>
+<li>Tener cuidado con dividir por cero \(\to\) hay que tomar una decisión</li>
+<li>Hacer para todas las posibles combinaciones.</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org600ee8f">
+<h4 id="org600ee8f">Ejemplo: Interacciones y Polinomios</h4>
+<div class="org-src-container">
+
+<pre><code class="ipython" >from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn import datasets
+
+boston = datasets.load_boston()
+
+X = boston.data
+y = boston.target
+
+X_train, X_test, y_train, y_test = train_test_split(X,y)
+
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+interactions = PolynomialFeatures(degree=2).fit(X_train_scaled)
+X_train_inter = interactions.transform(X_train_scaled)
+X_test_int = interactions.transform(X_test_scaled)
+
+## ¡Ahora hay 105 variables!
+print(X_train_inter.shape)
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >"Nombres de las variables de interacción: {}\n".format(interactions.get_feature_names())
+</code></pre>
+</div>
+
+
+</section>
+<section id="slide-org13ddf5d">
+<h4 id="org13ddf5d">Proceso Automatizado (continuación)</h4>
+<ul>
+<li>Transformar una variable numérica en una binaria.
+<ul>
+<li>Se trata de encontrar el <code>cut-off</code> que maximize tu variable dependiente.</li>
+<li>Muy parecido a lo que hacen algoritmos como el  <code>J48</code> (en su versión comercial se conoce como <code>C5</code>).</li>
+<li>Hay un paquete de <code>R</code> que lo implementa: <code>C50</code>.</li>
+
+</ul></li>
+
+<li>Numérica \(\to\) bin.</li>
+
+<li>Otras
+<ul>
+<li>\(X^2\)</li>
+<li>\(\log X\)</li>
+<li>etc.</li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section id="slide-orgbbe6a70">
+<h3 id="orgbbe6a70"><i>Feature Selection</i></h3>
+<div class="outline-text-3" id="text-orgbbe6a70">
+</div></section>
+<section id="slide-org7e93b0c">
+<h4 id="org7e93b0c">¿Qué es?</h4>
+<ul>
+<li>El proceso de seleccionar variables antes que ejecutar los algoritmos.</li>
+
+<li>Realiza <code>cross-validation</code>
+<ul>
+<li>Realizar <code>cross-validation</code> sólo en una parte del proceso (i.e. el modelo) es hacer trampa.</li>
+
+</ul></li>
+
+<li>¡Cuidado! No hagas <code>feature selection</code> en todos tus datos antes de construir el modelo.
+<ul>
+<li>Aumenta el riesgo de <code>over-fitting</code>.</li>
+<li>Aún realizando <code>cross-validation</code>.</li>
+
+</ul></li>
+
+<li>Hay todo un paquete en <code>sklearn</code> : <code>sklearn.feature_selection</code></li>
+
+</ul>
+
+</section>
+<section id="slide-org9bce41c">
+<h4 id="org9bce41c">Filtrado basado en las propiedades de la distribución</h4>
+<ul>
+<li>Si hay poca variabilidad, no pueden ser usados para distinguir entre clases.</li>
+<li>Podemos utilizar como medidas de variabilidad a la mediana y al inter-quartile range IQR.</li>
+<li>En <code>sklearn</code>  puedes utilizar <code>VarianceThreshold</code></li>
+
+</ul>
+
+</section>
+<section id="slide-orgd97d3c3">
+<h4 id="orgd97d3c3">Filtrado basado en las propiedades de la distribución (Algoritmo)</h4>
+<ul>
+<li>Obtenga para cada variable su mediana.</li>
+<li>Obtenga para cada variable sus <code>quartiles</code>, en particular,
+reste el tercer <code>quartil</code> del primero, para obtener el <code>IQR</code>.</li>
+<li>Realice un <i>scatter-plot</i> entre ambas variables, esta gráfica nos da una
+visión de la distribución de las variables.</li>
+<li>Eliminemos las variables que tengan "baja variabilidad"
+i.e. que sean menores que un porcentaje del <code>IQR</code> global.
+<ul>
+<li>e.g. \(< 1/5\) ó \(< 1/6\).</li>
+
+</ul></li>
+<li><b>¡Cuidado!</b> Que las variables individuales tengan baja variabilidad,
+no significa que unidas con otras variables la tengan. Para una posible solución
+ver  <a href="http://sci2s.ugr.es/keel/pdf/algorithm/congreso/kira1992.pdf">"A practical approach to Feature Selection"</a> de Kira and  Rendell, 1992.</li>
+
+</ul>
+
+
+
+</section>
+<section id="slide-orge482ab7">
+<h4 id="orge482ab7">Ejercicio</h4>
+<ul>
+<li>Implementar el método <code>low_variability()</code> en <code>utils.r</code></li>
+
+</ul>
+
+</section>
+<section id="slide-org39004ff">
+<h4 id="org39004ff"><i>Correlation Filtering</i></h4>
+<ul>
+<li>Tira la variable que estén muy correlacionadas.</li>
+<li>Problema: ¿Cuál tiras?
+<ul>
+<li>No hay criterio establecido</li>
+<li>A veces se puede tirar la mejor &#x2026;</li>
+
+</ul></li>
+<li>Ya implementamos algo parecido en el la parte de <b>EDA</b> (revisa <code>eda.Rmd</code>).</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org18e9bb8">
+<h4 id="org18e9bb8">Ejercicio</h4>
+<ul>
+<li>Implementar el método <code>correlation_filtering()</code> en <code>utils.r</code>.</li>
+<li>Implementar el método <code>correlation_filtering()</code> en <code>utils.py</code>.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org05571d1">
+<h4 id="org05571d1"><i>Fast correlation-based filtering</i></h4>
+<ul>
+<li>Descrito en
+<a href="http://pdf.aminer.org/000/335/746/feature_selection_for_high_dimensional_data_a_fast_correlation_based.pdf">"Feature Selection for High-Dimensional Data: A Fast Correlation-Based Filter Solution</a>
+de Yu &amp; Liu ICML 2003</li>
+
+<li>Obtienes un conjunto de variables no muy relacionado entre sí,
+pero altamente relacionado a la variable de salida.</li>
+
+</ul>
+
+</section>
+<section id="slide-org4bfb0ac">
+<h4 id="org4bfb0ac"><i>Fast correlation-based filtering</i> (Algoritmo)</h4>
+<ul>
+<li>Encuentra una medida de relación entre cada par de variables.
+<ul>
+<li>Aquí usaremos la correlación, el artículo usa otra cosa.</li>
+
+</ul></li>
+<li>Encuentra la correlación de cada variable con la variable de salida.</li>
+<li>Ordena las variables según su correlación con la variable de salida.</li>
+<li>Elige la mejor variable (la de hasta arriba).</li>
+<li>Tira las variables muy correlacionadas con esta.</li>
+<li>Repite el proceso.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-orgdfea09d">
+<h4 id="orgdfea09d">Ejercicio</h4>
+<ul>
+<li>Implementar el método <code>FCB_filtering()</code> en <code>utils.r</code>.</li>
+<li>Implementar el método <code>FCB_filtering()</code> en <code>utils.py</code>.</li>
+
+</ul>
+
+</section>
+<section id="slide-orgf5be943">
+<h4 id="orgf5be943">Métodos comúnes usados</h4>
+<ul>
+<li>Existen dos métodos utilizados comúnmente para este menester.</li>
+
+<li><i>Forward Selection</i>
+<ul>
+<li>El cual inicia sin variables y va agregando una a una las variables, hasta que no mejora la metrica de evaluación.</li>
+
+</ul></li>
+
+<li><i>Backward Selection</i>
+<ul>
+<li>Empieza con todas las variables en el modelo, y se van removiendo.</li>
+
+</ul></li>
+
+</ul>
+
+
+
+</section>
+<section id="slide-orgf234bc9">
+<h4 id="orgf234bc9"><i>Forward selection</i> (Algoritmo)</h4>
+<ul>
+<li>Ejecuta el algoritmo con cada variable (i.e. de manera individual)
+<ul>
+<li>Si tienes \(x\) número de variables, ejecutas el algoritmo \(x\) veces.</li>
+<li>Como siempre, usando <code>cross-validation</code>.</li>
+
+</ul></li>
+
+<li>Elige  el mejor modelo y quédate con esa variable.</li>
+
+<li>Ahora, ejecuta el modelo de nuevo, pero ahora con la variable
+recién seleccionada y con cada variable restante.</li>
+
+<li>Elige el mejor modelo y quédate con esas dos variables.</li>
+
+<li>Repite hasta que no mejore el modelo agregando más variables.</li>
+
+</ul>
+
+</section>
+<section id="slide-org30b3f7a">
+<h4 id="org30b3f7a"><i>Backward selection</i></h4>
+<ul>
+<li><i>Backward selection</i>  es el mismo algoritmo, pero invertido
+<ul>
+<li>kind-of &#x2026;</li>
+
+</ul></li>
+
+<li>En <code>sklearn</code>, este algoritmo está implementado con el nombre <code>RFE</code>
+(<i>Recursive Feature Elimination</i>)</li>
+
+</ul>
+
+</section>
+<section id="slide-orga308f8a">
+<h4 id="orga308f8a">Ejercicio</h4>
+<ul>
+<li>Implementar el método <code>forward_filtering()</code> en <code>utils.r</code>.</li>
+<li>Implementar el método <code>forward_filtering()</code> en <code>utils.py</code>.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org8412526">
+<h4 id="org8412526">Filtros <b>ANOVA</b></h4>
+<ul>
+<li>Si la variable tiene una distribución similar para los posibles
+valores de la variable a predecir, seguramente no sirve para discriminar.</li>
+
+<li>Compararemos la media condicionada a los valores de la variable de salida.</li>
+
+<li>Para las variables que tengamos una confianza estadística elevada de que son
+iguales a lo largo de los valores de la variable dependiente, serán descartados.</li>
+
+<li>Para eso usaremos métodos <code>ANOVA</code>.</li>
+
+<li><b>¡Cuidado!</b> <code>ANOVA</code>  tiene varias suposiciones para ser válida,</li>
+
+</ul>
+
+</section>
+<section>
+
+
+<ul>
+<li>Existen varias implementaciones en <code>R</code> (<code>aov()</code>, <code>Anova()</code>, etc.)</li>
+
+<li>En <code>sklearn</code> este método está implementado en la sección de "Univariate feature selection"
+el cuál contiene los métodos <code>SelectKBest</code> , <code>SelectPercentile</code>,
+<code>SelectFpr</code> (<i>False positive rate test</i>), <code>SelectFdr</code> (<i>False
+discovery rate test</i>), entre otros. Estos objetos
+reciben como parámetro la prueba estadística a utilizar, en
+particular <b>ANOVA</b> está implementado mediante <code>f_classif</code>.</li>
+
+</ul>
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >import numpy as np
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import PolynomialFeatures
+
+## Generamos 50 columnas aleatorias
+boston = datasets.load_boston()
+
+X = boston.data
+y = boston.target
+
+
+random_generator = np.random.RandomState(1234)
+noise_cols = random_generator.normal(size=(len(boston.data), 50))
+X_noisy = np.hstack([boston.data, noise_cols])
+y = boston.target
+
+X_train, X_test, y_train, y_test = train_test_split(X_noisy, y, random_state=0, test_size=.3)
+
+from sklearn.feature_selection import SelectPercentile
+
+select_percentile = SelectPercentile(percentile=10)
+select_percentile.fit(X_train, y_train)
+X_train_selected = select_percentile.transform(X_train)
+
+## Para generar la imágen
+# mask = select_percentile.get_support()
+# mask = mask[np.newaxis, :]
+# plt.close()
+# plt.matshow(mask.reshape(1, -1), cmap='gray_r')
+# plt.xlabel("Índice de columnas")
+# plt.savefig('../images/select_percentile.png')
+</code></pre>
+</div>
+
+
+
+<div id="org606aaa4" class="figure">
+<p><img src="../images/select_percentile.png" alt="select_percentile.png" />
+</p>
+<p><span class="figure-number">Figure 4: </span><i>Features</i> seleccionados en el percentil 10 usando <b>ANOVA</b> (<i>F-test</i>)</p>
+</div>
+
+</section>
+<section id="slide-org543ace0">
+<h4 id="org543ace0"><i>Random Forest</i></h4>
+<ul>
+<li>El algoritmo del <code>RF</code> puede ser usado para obtener un rankeo de las variables
+en términos de su utilidad para la tarea de clasificación.</li>
+
+</ul>
+
+<pre class="example">
+library(randomForest)
+rf &lt;- randomForest(formula, df, importance=TRUE)
+imp &lt;- importance(rf)
+rf.vars &lt;- names(imp)[order(imp, decreasing=TRUE)[1:30]]
+# Gráfica
+varImpPlot(fmodel, type=1)
+</pre>
+
+<ul>
+<li>Esto puede ser usado para no tener árboles tan pesados y lentos o
+pueden ser usados para selección de variables de otros algoritmos
+(como la regresión logística)</li>
+
+<li>En <code>sklearn</code> se utiliza el objeto <code>SelectFromModel</code></li>
+
+</ul>
+
+</section>
+<section id="slide-org6fdb1da">
+<h4 id="org6fdb1da">Épsilon</h4>
+<ul>
+<li>Descrita en el artículo "An Introduction to Data Mining" de Stephens and Sukumar, 2006.</li>
+<li>Para obtener un perfil o una predicción de la pertenencia de
+individuos con rasgos descritos en un vector \(X\) a una clase dada
+por un vector \(C\) se define una función que se llamará Epsilon.</li>
+<li>La idea es identificar para la clase de interés: \(C\), los factores
+\(X_i\) que están más correlaciones con ella, considerando la
+probabilidad condicional \(P (C|X)\) y midiéndola con el punto de
+referencia \(P(C)\) que representa la hipótesis nula; de esta manera,
+al calcular \(P(C|X) − P (C)\), se estará midiendo la incidencia de
+clase en la población general.</li>
+<li>Se aplica a variables categoricas, pero puede adaptarse para variables numéricas.</li>
+
+</ul>
+
+</section>
+<section id="slide-org9369929">
+<h4 id="org9369929">Épsilon</h4>
+<ul>
+<li>Como se está considerando la pertenencia de clase, cada individuo
+representa un ensayo Bernoulli (1 = pertence a la clase, 0 = no
+pertenece a la clase) y la distribución de probabilidad asociada es
+una distribución binomial, de esta manera, la significancia
+estadística para \(P(C|X) − P (C)\) se puede determinar utilizando la
+prueba binomial Épsilon:</li>
+
+</ul>
+
+<p>
+\[
+\varepsilon(C|X; C) = \frac{
+N_X [P (C|X) − P (C)]}{
+\sqrt{N_X P (C)(1 − P (C))}}
+\]
+</p>
+
+<ul>
+<li>El valor resultante indica cuantas desviaciones estándar se aleja el
+valor de lo que se observa \(N_X P (C|X)\) del valor de lo que se
+espera observar \(N_X P (C)\).</li>
+
+</ul>
+
+</section>
+<section id="slide-orgf7a5e2b">
+<h4 id="orgf7a5e2b">Épsilon</h4>
+<p>
+Para variables métricas
+</p>
+
+<p>
+\[
+\epsilon' = \frac{\langle x_i \rangle_C - \langle x_i \rangle_{\sim C}}{\sqrt{\frac{\sigma^2_{iC}}{N_{iC}} - \frac{\sigma^2_{i\sim C}}{N_{i\sim C}}}}
+\]
+</p>
+
+</section>
+<section id="slide-org4714685">
+<h4 id="org4714685">Épsilon</h4>
+<ul>
+<li>Para el caso bivariado (cfr. ANÁLISIS DEL SISTEMA CIUDADANO DE
+MONITOREO DE ENFERMEDADES RESPIRATORIAS –REPORTA CON MINERÍA DE
+DATOS", R. Rodríguez, Tesis , 2012.)</li>
+
+<li>Considerar las probabilidades condicionales \(P (C|X_i X_j )\) y \(P
+  (X_i X_j |C)\) en relación con diferentes hipótesis de nulidad que
+pueden proporcionar información complementaria. Las distribuciones
+de referencia serán: \(P (C)\), \(P (C|X i )\), \(P (C|X j )\) y \(P(X_i |C)P (X_j |C)\).</li>
+
+</ul>
+
+</section>
+<section id="slide-org2ad821b">
+<h4 id="org2ad821b">Épsilon</h4>
+<ul>
+<li>\(P (C|X_i X_j ) − P (C)\) determinará la importancia de la presencia
+conjunta de las variables \(X_i\) y \(X_j\) en la pertenencia a la clase
+en relación con la población</li>
+
+</ul>
+<p>
+general.
+</p>
+
+<ul>
+<li>\(P (C|X_i X_j )−P (C|X_i )\) será una medida del efecto de \(X_j\) en presencia de \(X_i\).</li>
+
+<li>\(P (X_i X_j |C) − P (X_i |C)P (X_j |C)\) refleja que tan
+correlacionas están \(X_i\) y \(X_j\) respecto a la clase \(C\).</li>
+
+<li>Las pruebas serían: \(ε(C|X_i , X_j ; C)\) , \(ε(C|X_i X_j ; C|X_i )\),
+\(ε(C|X_i X_j ; C|X_j )\) y \(ε(X_i X_j |C; X_i |CX_j |C)\).</li>
+
+</ul>
+
+</section>
+<section id="slide-org090a4f2">
+<h4 id="org090a4f2">Ejercicio</h4>
+<ul>
+<li>Implementar el método <code>epsilon()</code> en <code>utils.r</code>, para el caso de una variable,
+tanto numérico como categórico.</li>
+
+<li>Haga lo mismo para <code>utils.py</code></li>
+
+</ul>
+
+
+</section>
+<section id="slide-orgb229757">
+<h4 id="orgb229757">Aglomeración</h4>
+<ul>
+<li>Si tenemos muchas variables y muchas muy correlacionadas, podemos formar clústers con ellas.</li>
+
+<li>Elegir sólo una de cada grupo.</li>
+
+<li>Se puede combinar con métodos de ensamble.</li>
+
+</ul>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org7235338">
+<h2 id="org7235338">Evaluación <i>Off-line</i></h2>
+<div class="outline-text-2" id="text-org7235338">
+</div></section>
+<section id="slide-org5e92443">
+<h3 id="org5e92443">Referencias</h3>
+<p>
+Esta sección está basada en los libros <b>Practical Data Science with R</b> y
+<b>Evaluating Machine Learning Models</b> y en otros varios artículos que son citados en el texto.
+</p>
+
+<p>
+Algunas figuras son mías y otras son de la documentación de <code>scikit-learn</code>
+</p>
+
+</section>
+<section id="slide-org2d9deaa">
+<h3 id="org2d9deaa">Generalidades</h3>
+<ul>
+<li>Después de construir un modelo, hay que verificar que por lo menos funcione
+con los datos con los que fué creado (entrenado).</li>
+
+<li>Para cuantificar el "que funcione" debemos de escoger algunas métricas.</li>
+
+<li>Los factores que influyen en la elección de la métrica son:
+<ul>
+<li>La meta del negocio</li>
+<li>El algoritmo elegido</li>
+<li>El <i>dataset</i></li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section id="slide-org924c675">
+<h3 id="org924c675">¿Dónde evalúo?</h3>
+<ul>
+<li>En la parte de prototipado, en la cual entrenamos, con datos históricos,
+diferentes modelos para encontrar el mejor (<i>model selection</i>)
+<ul>
+<li>Evaluación <i>off-line</i></li>
+<li>Su principal objetivo es encontrar el modelo correcto que mejor se adapte a los datos.</li>
+
+</ul></li>
+
+<li>Una vez encontrado el mejor modelo, lo ponemos en <b>producción</b> y ahí
+lo probamos con datos en vivo.
+<ul>
+<li>Ver la sección de Evaluación <i>on-line</i>
+<ul>
+<li>Una de las técnicas más usadas es <b>A/B testing</b></li>
+<li>Otra es <i>multiarmed bandits</i></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section id="slide-org0716412">
+<h3 id="org0716412">Cosas a tomar en cuenta</h3>
+<ul>
+<li>Es probable que las métricas para <i>off-line</i> y <i>on-line</i> sean diferentes
+<ul>
+<li><i>off-line</i>: e.g. <i>precision-recall</i></li>
+<li><i>on-line</i>: e.g. <i>customer lifetime value</i></li>
+<li>Esto es difícil, ya que se le pide al modelo ser bueno en algo en lo que no fué entrenado (!)</li>
+
+</ul></li>
+
+<li>Es probable que el entrenamiento y la validación tengan diferentes métricas</li>
+
+</ul>
+
+</section>
+<section>
+
+<ul>
+<li>Otro posible problema son fuentes de datos <i>skewed</i>: desbalanceadas, existencia de <i>outliers</i> o con rarezas</li>
+
+<li>Hay dos fuentes de datos: datos históricos y datos "vivos"
+<ul>
+<li>Hay que tomar en cuenta el <i>temporal drift</i></li>
+<li>Una manera de crear "nuevos datos" es utilizar varias técnicas como:
+<ul>
+<li><i>hold-out validation</i></li>
+<li><i>k-fold cross-validation</i></li>
+<li><i>bootstrapping</i></li>
+<li><i>jacknife resampling</i></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section id="slide-org508d116">
+<h3 id="org508d116">Evaluación</h3>
+<p>
+Cada conjunto de tareas como clasificación, regresión, <i>ranking</i>, <i>clustering</i> etc
+tienen diferentes métricas.
+</p>
+
+
+</section>
+<section id="slide-org04ae660">
+<h4 id="org04ae660">Evaluación de modelos de clasificación</h4>
+<p>
+<b>Accuracy</b>:
+</p>
+
+<ul>
+<li>¿Qué tan frecuente el clasificador hace la predicción correcta?</li>
+
+<li><b><b>Pregunta de negocio</b></b>: <b>Necesitamos que la mayoría de las decisiones sean las correctas</b>.</li>
+
+</ul>
+
+<div>
+\begin{equation}
+\begin{split}
+\text{accuracy} &=  \frac{\text{Número de predicciones correctas}}{\text{Número total de observaciones}} \\
+    & = \frac{TP  + TN}{TP+FP+TN+FN}
+\end{split}
+\end{equation}
+
+</div>
+
+</section>
+<section>
+
+<ul>
+<li>El <i>accuracy</i> es un ejemplo de <i>micro-average</i></li>
+
+<li>No sirve para dataset no balanceados (por ejemplo en detección de fraude).
+<ul>
+<li>En este caso el modelo nulo es muy preciso (very accurate), pero obviamente esto no lo hace el mejor modelo.</li>
+<li>Hay que considerar una función de costo.</li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section>
+
+
+<p>
+<b>Matriz de confusión</b>
+</p>
+
+<p>
+Una de las desventajas de la métrica de <i>accuracy</i> es que no hace distinción
+entre las clases, y en muchas aplicaciones los <b>falsos positivos</b> cuestan
+diferente que los <b>falsos negativos</b>.
+</p>
+
+<p>
+Una <b>matriz de confusión</b> (Tabla <a href="#/slide-org8ecb01e">3</a>) muestra un resumen más detallado de las clasificaciones
+correctas o incorrectas para cada clase.
+</p>
+
+</section>
+<section>
+
+<p>
+Los renglones corresponden a la clase verdadera, las columnas representan la predicción.
+</p>
+
+<table id="org8ecb01e" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" width="100%">
+<caption class="t-above"><span class="table-number">Table 3:</span> Matriz de confusión binaria</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Predicha como positivo</th>
+<th scope="col" class="org-left">Predicha como negativo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Etiquetada como positivo</td>
+<td class="org-left"><i>true positive</i> (<code>TP</code>)</td>
+<td class="org-left"><i>false negative</i>  (<code>FN</code>)</td>
+</tr>
+
+<tr>
+<td class="org-left">Etiquetada como negativa</td>
+<td class="org-left"><i>false positive</i> (<code>FP</code>)</td>
+<td class="org-left"><i>true negative</i> (<code>TN</code>)</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Esto permite calcular el <i>accuracy</i> de cada clase.
+</p>
+
+</section>
+<section>
+
+<p>
+<b>Per-class Accuracy</b>
+</p>
+
+<ul>
+<li>Esta métrica es el promedio del <i>accuracy</i> de cada clase.</li>
+
+<li>Esto es un ejemplo de un <i>macro-average</i></li>
+
+</ul>
+
+</section>
+<section id="slide-org57d7f0f">
+<h4 id="org57d7f0f">Evaluación de modelos de probabilidad</h4>
+<ul>
+<li>Sirven para clasificación o para regresión.</li>
+<li>Indican la probabilidad estimada (confianza, vamos) de que la observación pertenezca a una clase.</li>
+<li>Hay que elegir un <code>cut-off</code>.</li>
+
+</ul>
+
+</section>
+<section>
+
+<p>
+<b>Log-loss</b>
+</p>
+
+<ul>
+<li>En términos sencillos mide que tan equivocado está la clasificación
+<ul>
+<li>e.g. /Si la etiqueta verdadera es \(0\) y el clasificador dice que es \(1\) con una probabilidad de \(0.51\)
+y la frontera de decisión es \(0.50\), es un "near-miss".</li>
+
+</ul></li>
+
+<li><i>Log-loss</i>, entonces, se puede considerar como una medida "suave" de <i>accuracy</i>.</li>
+
+</ul>
+
+<div>
+\begin{equation}
+\text{log-loss} = -\frac{1}{N}\sum_{i=1}^N y_i \log p_i + (1-y_i)\log(1-p_i)
+\end{equation}
+
+</div>
+
+</section>
+<section>
+
+<p>
+<b>AUC</b>  y <b>ROC</b>
+</p>
+
+<ul>
+<li><b>ROC</b> es un tipo de curva y sus iniciales significan <i>receiver operating characteristic curve</i> (Figura <a href="#/slide-orga2e3223">5</a>).</li>
+
+<li>La curva <b>ROC</b> muestra la sensibilidad del clasificador, al dibujar la tasa de verdaderos positivos (<code>TRP</code>)
+contra la tasa de falsos positivos (<code>FPR</code>).</li>
+
+<li>Se volvió popular por el artículo <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.692.1962"><i>Basic Principles of ROC Analysis</i></a> de <b>Charles Metz</b> en 1978
+<ul>
+<li>Desafortunadamente el artículo no se puede consultar en línea, pero una buena explicación está <a href="http://mlwiki.org/index.php/ROC_Analysis">aquí</a> (texto) o <a href="http://bit.ly/roc-auc">aquí</a> (vídeo).</li>
+
+</ul></li>
+
+<li>Aunque debería de ser obvio, la curva <b>ROC</b> <b>no</b> es un <i>número</i>, es toda una <i>curva</i></li>
+
+<li><b>AUC</b> significa <i>área bajo la curva</i> donde la curva es la curva <b>ROC</b></li>
+
+<li><b>AUC</b> es una manera de resumir la curva <b>ROC</b></li>
+
+</ul>
+
+
+</section>
+<section>
+
+
+<div id="orga2e3223" class="figure">
+<p><img src="../images/ROC.png" alt="ROC.png" width="800px" height="600px" />
+</p>
+<p><span class="figure-number">Figure 5: </span>Ejemplo de curva <b>ROC</b>.</p>
+</div>
+
+
+</section>
+<section>
+
+<p>
+<b>Ejercicio</b> Crea una función para crear la curva ROC, llámala <code>plot_roc</code> y guárdala en <code>utils.py</code>
+</p>
+
+
+</section>
+<section>
+
+<p>
+<b>Precision</b>
+</p>
+<ul>
+<li><b><b>Pregunta de negocio</b></b>: <b>Lo que marquemos como \(x\), más vale que sea \(x\)</b>.</li>
+<li>¿Qué fracción clasificada por el modelo están en la clase?</li>
+<li>Cuando el modelo dice que el <i>data point</i> <i>pertenece a la clase</i>, que tan frecuentemente le atina.</li>
+<li>La proporción de observaciones clasificadas como \(C\) correctamente de todas
+las que se clasificaron como \(C\)</li>
+<li>Mide la capacidad del sistema de rechazar aquellas observaciones no relevantes en
+el conjunto clasificado</li>
+<li>La precisión se ve afectada por la cantidad de <i>falsos positivos</i> (el sistema clasificó una observación erróneamente)</li>
+
+</ul>
+<p>
+\[
+\text{prec} = \frac{TP}{TP+FP}
+\]
+</p>
+
+</section>
+<section>
+
+<p>
+<b>Recall</b>
+</p>
+<ul>
+<li><b><b>Pregunta de negocio</b></b>: <b>Queremos reducir \(x\) por en un tanto por ciento</b>.</li>
+<li>¿Qué fracción que están en la clase fueron detectadas por el modelo?</li>
+<li>Qué tan frecuentemente el clasificador encuentra lo que debe de encontrar.</li>
+<li>La proporción de observaciones clasificadas como \(C\) de todas las posibles que podían ser \(C\).</li>
+<li>Mide la capacidad del sistema de encontrar todas las observaciones relevantes</li>
+<li>El <i>recall</i> se ve afectado por la cantidad de <i>falsos negativos</i> (el sistema falló al clasificar una observación relevante)</li>
+
+</ul>
+
+<p>
+\[
+\text{rec} = \frac{TP}{TP+FN}
+\]
+</p>
+
+</section>
+<section>
+
+<p>
+<b>Precision/Recall</b>
+</p>
+
+<ul>
+<li>Regularmente son utilizados juntos, y son una métrica utilizada para <i>ranking</i> y clasificadores</li>
+
+<li>En el caso de un <i>ranker</i>, puede ser de interés sólo fijarse en los primeros \(k\) -items devueltos,
+Lo cual nos define las medidas <i>precision@k</i> y <i>recall@k</i>.</li>
+
+<li>De manera análoga a la curva <b>ROC</b> se puede definir la curva <i>precision-recall</i>.</li>
+
+</ul>
+
+
+</section>
+<section>
+
+<p>
+<b>Ejercicio</b> Crea una función para generar la gráfica de <b>precision/recall</b>, llámale <code>plot_prec_rec</code>
+</p>
+
+</section>
+<section id="slide-org9512977">
+<h4 id="org9512977">Precision-Recall@k curve (a.k.a as Rayid's plot)</h4>
+<p>
+<a href="http://github.com/rayidghani/magicloops="><i>Créditos: Rayid Ghani@U Chicago</i></a>
+</p>
+
+<pre class="example">
+def plot_precision_recall_n(y_true, y_prob, model_name):
+    from sklearn.metrics import precision_recall_curve
+    y_score = y_prob
+    precision_curve, recall_curve, pr_thresholds = precision_recall_curve(y_true, y_score)
+    precision_curve = precision_curve[:-1]
+    recall_curve = recall_curve[:-1]
+    pct_above_per_thresh = []
+    number_scored = len(y_score)
+    for value in pr_thresholds:
+        num_above_thresh = len(y_score[y_score&gt;=value])
+        pct_above_thresh = num_above_thresh / float(number_scored)
+        pct_above_per_thresh.append(pct_above_thresh)
+    pct_above_per_thresh = np.array(pct_above_per_thresh)
+    plt.clf()
+    fig, ax1 = plt.subplots()
+    ax1.plot(pct_above_per_thresh, precision_curve, 'b')
+    ax1.set_xlabel('percent of population')
+    ax1.set_ylabel('precision', color='b')
+    ax2 = ax1.twinx()
+    ax2.plot(pct_above_per_thresh, recall_curve, 'r')
+    ax2.set_ylabel('recall', color='r')
+
+    name = model_name
+    plt.title(name)
+    #plt.savefig(name)
+    plt.show()
+</pre>
+
+
+</section>
+<section>
+
+
+<div id="org7f6a904" class="figure">
+<p><img src="../images/rayids_curve.png" alt="rayids_curve.png" width="800px" height="600px" />
+</p>
+<p><span class="figure-number">Figure 6: </span>Ejemplo de curva <b>Prec/Recall@k</b> (a.k.a <i>Rayid's curve</i>).</p>
+</div>
+
+
+</section>
+<section>
+
+<p>
+<b>F1 score</b>
+</p>
+
+<ul>
+<li>Se usa en conjunto con <code>precision</code> y <code>recall</code>.</li>
+
+<li>Mide el sacrificio de <code>recall</code> y/o <code>precision</code> uno respecto al otro.</li>
+
+<li>Es una manera de resumir la curva de <i>precision-recall</i>
+<ul>
+<li>Análogo al <b>AUC</b> para la curva <b>ROC</b></li>
+
+</ul></li>
+
+</ul>
+
+<p>
+\[
+\text{F1} = \frac{2*\text{prec}*\text{rec}}{\text{prec} + \text{rec}}
+\]
+</p>
+
+</section>
+<section>
+
+<p>
+<b>Sensitivity</b>
+</p>
+<ul>
+<li><b><b>Pregunta de negocio</b></b>: <b>Necesitamos reducir la clase \(x\) o no hay negocio</b>.</li>
+<li>Conocida como <code>true positive rate</code> (TPR) es igual al <code>recall</code>.</li>
+
+</ul>
+
+</section>
+<section>
+
+<p>
+<b>Specificity</b>
+</p>
+<ul>
+<li><b><b>Pregunta de negocio</b></b>: <b>No podemos equivocarnos en \(\sim x\), el sistema (o el usuario) deben de tener este servicio altísimo</b>.</li>
+<li>Conocida también como <code>true negative rate</code></li>
+
+</ul>
+
+<p>
+\[
+\text{spec} = \frac{TN}{TN+FP}
+\]
+</p>
+
+<ul>
+<li>El modelo nulo regularmente clasifica con \(0\) en una de los dos, por lo que los modelos que no sirven, tienen muy bajo uno de estas métricas.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-orga8c70d3">
+<h4 id="orga8c70d3">Gráfica de doble densidad</h4>
+
+<div id="org89f11a0" class="figure">
+<p><img src="../images/evaluación_curvas_densidad.jpg" alt="evaluación_curvas_densidad.jpg" width="800px" height="600px" />
+</p>
+<p><span class="figure-number">Figure 7: </span>Ejemplo de curva de doble densidad.</p>
+</div>
+
+
+</section>
+<section>
+
+<p>
+<b>Ejercicio</b> Crea una función para generar esta gráfica, llámale <code>plot_double_density</code>
+</p>
+
+
+</section>
+<section id="slide-org089cdf2">
+<h4 id="org089cdf2">Evaluación de modelos de regresión</h4>
+<p>
+<b>Residuos</b> es la palabra clave.
+</p>
+<ul>
+<li>Diferencia entre nuestras predicciones \(\hat{y}\) y los valores reales de salida \(y\).</li>
+
+</ul>
+
+</section>
+<section>
+
+
+<p>
+<b>RMSE</b>: <i>Root mean square error</i>
+</p>
+
+<ul>
+<li><b><b>Pregunta de negocio</b></b>: <b>Queremos un error (en promedio) menor de tantos miles por unidad estudiada</b>.</li>
+<li>Se puede pensar como una desviación estándar.</li>
+<li>Está en las mismas unidades que \(y\).</li>
+
+</ul>
+
+<p>
+\[
+\textbf{RMSE} = \sqrt\frac{\sum_i(y_i - \hat{y}_i)^2}{n}
+\]
+</p>
+
+</section>
+<section>
+
+<ul>
+<li><b>RMSE</b> tiene problemas, en particular es sensible a <i>outliers</i> (ya que es un promedio)
+<ul>
+<li>Es decir no es una medida robusta (en el sentido estadístico)</li>
+
+</ul></li>
+
+<li>Para tratar de resolver esto se pueden utilizar <b>cuantiles</b> o <b>percentiles</b> del error,
+por ejemplo <b>MAPE</b> la mediana (el percentil 50%) del porcentaje del valor absoluto de los errores:</li>
+
+</ul>
+
+<p>
+\[
+\textbf{MAPE} = \text{median}\left(\left|\frac{y_i - \hat{y}_i}{y_i}\right|\right)
+\]
+</p>
+
+</section>
+<section>
+
+<p>
+\(R^2\)
+</p>
+<ul>
+<li><b><b>Pregunta de negocio</b></b>: <b>Queremos un modelo que explique tanto porcentaje del valor de tal</b>.</li>
+<li>1.0 menos cuanta varianza no estamos explicando por el modelo.
+\[ 1 - \frac{\sum(\hat{y} - y)}{[\sum(\bar{y} - y)]^2} \]</li>
+<li>No tiene unidades.</li>
+<li>Cerca de cero o negativa significa que el modelo es lo peor que nos pudo pasar.</li>
+
+</ul>
+
+
+
+</section>
+<section id="slide-orgc543b1a">
+<h4 id="orgc543b1a">Evaluación de modelos de <i>clustering</i></h4>
+<ul>
+<li>Son difíciles de evaluar \(\to\) verificar resumenes de la clusterización.</li>
+
+<li>Número de <i>clusters</i></li>
+
+<li>Número de observaciones por cluster.
+<ul>
+<li><i>hair clusters</i> : Muy pocas observaciones</li>
+<li><i>waste clusters</i>: Muchos puntos</li>
+
+</ul></li>
+
+<li>Compactos
+<ul>
+<li>Comparar la distancia entre dos puntos en el cluster con la
+distancia típica entre dos clusters.</li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org5b169ee">
+<h2 id="org5b169ee">Selección de modelos</h2>
+<div class="outline-text-2" id="text-org5b169ee">
+</div></section>
+<section id="slide-orgf2a719c">
+<h3 id="orgf2a719c">Selección de modelos</h3>
+<p>
+Durante la etapa de prototipado, estamos ajustando todo en el modelo: <i>features</i>,
+tipos de modelo, métodos de entrenamiento, hiper-parámetros etc. Por cada cambio
+generamos un nuevo modelo.
+</p>
+
+<p>
+<b>Selección de modelos</b> (<i>model selection</i>) es el proceso de seleccionar el modelo
+(o el tipo de modelo correcto) que mejor se adapta a los datos
+</p>
+
+<p>
+Después de entrenar el modelo, se debe de ejecutar pruebas en un <i>dataset</i> que sea
+<i>estadísticamente independiente</i> del usado para entrenar. Esto nos dará una estimación
+del <b>error de generalización</b>.
+</p>
+
+
+</section>
+<section id="slide-org2cc1409">
+<h3 id="org2cc1409">Hold-out validation</h3>
+<ul>
+<li>Suponiendo que todas las observaciones son i.i.d., seleccionamos una parte de los datos
+y la separamos para hacer la validación (Figura <a href="#/slide-org37d8436">8</a>)</li>
+
+<li>Computacionalmente es la más fácil de hacer y la más rápida en ejecutar.</li>
+
+</ul>
+
+
+
+<div id="org37d8436" class="figure">
+<p><img src="../images/hold-out.png" alt="hold-out.png" />
+</p>
+<p><span class="figure-number">Figure 8: </span>Hold-out validation</p>
+</div>
+
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >from sklearn.datasets import load_iris
+
+iris = load_iris()
+X, y = iris.data, iris.target
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X,y, random_state=1234)
+
+print(X_train.shape, X_test.shape)
+</code></pre>
+</div>
+
+
+
+</section>
+<section id="slide-org3c7fbc7">
+<h3 id="org3c7fbc7">Cross-validation</h3>
+<ul>
+<li>Es un método estadístico para evaluar la generalización del
+desempeño del modelo.</li>
+
+<li>Hay muchas variantes, la más común es <b>k-fold cross-validation</b> (Figura <a href="#/slide-orgbde6935">9</a>)</li>
+
+<li>En <b>k-fold cross-validation</b> se divide el conjunto de entrenamiento en \(k\) pedazos.
+Para cada conjunto de hiperparámetros, un \(k\) -pedazo será usado como el conjunto de
+validación y los \(k-1\) -pedazos restantes serán usados para entrenamiento
+(Figura <a href="#/slide-orgf1d760c">10</a>)</li>
+
+<li>El desempeño del modelo se toma como el promedio del desempeño en los \(k\) -pedazos</li>
+
+<li>Una de las ventajas es la siguiente: Si hacemos <i>hold-out</i>
+tendremos, por ejemplo, 80% de los datos para
+entrenar y 20% para probar, si hacemos <i>10-fold cross-validation</i>
+tendremos 90% de los datos para entrenar y 10% para probar.</li>
+
+<li>La desventaja más grande es el costo computacional</li>
+
+</ul>
+
+</section>
+<section>
+
+<ul>
+<li>Otra variante es <i>leave-one-out cross-validation</i> (LOOCV), es casi lo mismo que <b>k-fold cv</b> pero
+en este caso \(k=n\).</li>
+
+<li><b>¡Cuidado!</b> Cross-validation no es una manera de construir un modelo
+que se puede aplicar a nuevos datos, es una manera de evaluar modelos.</li>
+
+</ul>
+
+
+<div id="orgbde6935" class="figure">
+<p><img src="../images/k-fold-cv.png" alt="k-fold-cv.png" />
+</p>
+<p><span class="figure-number">Figure 9: </span>K-fold cross-validation</p>
+</div>
+
+</section>
+<section>
+
+
+<div id="orgf1d760c" class="figure">
+<p><object type="image/svg+xml" data="../images/cross_validation.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+<p><span class="figure-number">Figure 10: </span>Un \(k\) -pedazo es utilizado como conjunto de validación y el resto se usa para entrenar (Fuente: Documentación de <code>scikit-learn</code>)</p>
+</div>
+
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >from sklearn.linear_model import LogisticRegression
+
+classifier = LogisticRegression()
+classifier.fit(X_train, y_train)
+
+from sklearn.model_selection import cross_val_score
+scores = cross_val_score(classifier, X, y, cv=5)
+
+print(scores)  ## Todos los scores
+
+print(np.mean(scores)) ## El promedio de los scores
+
+# Si queremos controlar los folds podemos usar KFold, StratifiedKFold, ShuffleSplit, LeaveOneOut
+# Algunos de ellos se muestran en las imágenes siguientes
+</code></pre>
+</div>
+
+
+</section>
+<section>
+
+
+<div class="figure">
+<p><img src="../images/cv_kfold.png" alt="cv_kfold.png" />
+</p>
+<p><span class="figure-number">Figure 11: </span>K-fold cross-validation (\(k\) = 5) en el <code>iris</code> <i>dataset</i></p>
+</div>
+
+</section>
+<section>
+
+
+<div class="figure">
+<p><img src="../images/cv_loo.png" alt="cv_loo.png" />
+</p>
+<p><span class="figure-number">Figure 12: </span><i>Leave One Out</i> en el <code>iris</code> <i>dataset</i></p>
+</div>
+
+</section>
+<section>
+
+
+<div class="figure">
+<p><img src="../images/cv_shuffle_split.png" alt="cv_shuffle_split.png" />
+</p>
+<p><span class="figure-number">Figure 13: </span><i>Shuffle Split Cross Validation</i> en el <code>iris</code> <i>dataset</i></p>
+</div>
+
+
+
+</section>
+<section id="slide-org24cea1a">
+<h3 id="org24cea1a"><i>Bootstrap</i> y <i>Jacknife</i></h3>
+<ul>
+<li><i>Bootstrap</i> es una técnica de remuestreo: Genera varios <i>datasets</i> muestreando
+repetidamente del conjunto de datos original. Este muestreo es con <b>reemplazo</b>.</li>
+
+<li>Queremos hacer el muestreo con reemplazo, ya que no queremos cambiar la distribución
+empírica de los datos.</li>
+
+<li><i>Jacknife</i> inspiró a <i>bootstrap</i> y es muy parecido a LOOCV</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org7dbb78f">
+<h3 id="org7dbb78f"><i>Temporal cross-validation</i></h3>
+<p>
+La manera <b>canónica</b> de hacer <i>temporal cross-validation</i> está descrita en
+  este <a href="http://robjhyndman.com/hyndsight/crossvalidation/"><i>blog post</i></a> de Rob J. Hyndman. Básicamente es como sigue: 
+</p>
+
+<p>
+Supón que tienes \(n\) observaciones temporales (con el ordenamiento correcto)
+yquieres hacer \(k\) - fold cross-validation con \(k=4\). Divide tu data set en 5 
+pedazos, llámalos  \(n_i\) con \(i \in \{1,2,3,4,5\}\). Entonces, tus <i>folds</i>
+serían:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">fold</th>
+<th scope="col" class="org-left">entrenamiento</th>
+<th scope="col" class="org-left">prueba</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">\(n_1\)</td>
+<td class="org-left">\(n_2\)</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">\(n_1, n_2\)</td>
+<td class="org-left">\(n_3\)</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">\(n_1,n_2,n_3\)</td>
+<td class="org-left">\(n_4\)</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">\(n_1, n_2, n_3, n_4\)</td>
+<td class="org-left">\(n_5\)</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-orgb888a73">
+<h3 id="orgb888a73"><i>Temporal cross-validation</i>: \(hv\) - cross-validation</h3>
+<p>
+Existe otra técnica descrita en el artículo: <i>Consistent cross-validatory
+model-selection for dependent data: hv-block cross-validation</i> J. Racine,
+Journal of Econometrics <b>2000</b>
+</p>
+
+<p>
+En esta aproximación se dejan \(v\) observaciones para prueba y se borran \(h\)
+observaciones de cualquier lado de los datos de prueba.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">fold</th>
+<th scope="col" class="org-left">entrenamiento</th>
+<th scope="col" class="org-left">prueba</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">\(n_1, n_2, n_3, n_4^h\)</td>
+<td class="org-left">\(n_5\)</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">\(n_1, n_2, n_3^h, ^{h}n_5\)</td>
+<td class="org-left">\(n_4\)</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">\(n_1, n_2^h, ^{h}n_4, n_5\)</td>
+<td class="org-left">\(n_3\)</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">\(n_1^h, ^{h}n_3, n_4, n_5\)</td>
+<td class="org-left">\(n_2\)</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">\(^{h}n_2, n_3, n_4, n_5\)</td>
+<td class="org-left">\(n_1\)</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+La justificación de esta aproximación se basa en que tiene que haber una
+independencia entre el conjunto de prueba y el de entrenamiento para que
+cross-validation pueda funcionar. Dado que en datos temporales, datos adyacentes
+son (pueden) dependientes entre sí, cross-validation normal no se puede aplicar,
+pero si se deja un <b>hueco</b> entre los datos de prueba y los de entrenamiento a lo
+largo de <b>ambos</b> lados del conjunto de prueba.
+</p>
+
+</section>
+<section id="slide-org17962ce">
+<h3 id="org17962ce">Más lecturas recomendadas</h3>
+<ul>
+<li><a href="https://projecteuclid.org/euclid.ssu/1268143839"><b>A survey of cross-validation procedures for model selection</b></a> de Arlot y Celisse.</li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orga3adbd2">
+<h2 id="orga3adbd2"><i>Hyperparameter tuning</i></h2>
+<div class="outline-text-2" id="text-orga3adbd2">
+</div></section>
+<section id="slide-org69e722a">
+<h3 id="org69e722a"><i>Hyperparameter tuning</i></h3>
+<ul>
+<li>El ajuste ó selección de hiper-parámetros es una meta-tarea de aprendizaje</li>
+
+<li>Un <i>parámetro del modelo</i> es algo que es aprendido durante la fase de entrenamiento
+<ul>
+<li>e.g.  el vector de pesos \(\vec{w}^T\) en una regresión lineal \(\vec{w}^T \cdot \vec{x} = \vec{y}\)</li>
+
+</ul></li>
+
+<li>Los hiper-parámetros deben de ser especificados fuera del procedimiento de entrenamiento.
+<ul>
+<li>e.g. La profundidad de los árboles en los árboles de decisión, o el número de árboles en un <b>RF</b>.</li>
+
+</ul></li>
+
+<li>Debido a que el proceso de entrenamiento no establece (o fija) los hiperparámetros, tiene que haber
+un meta-proceso que se encargue de hacerlo, este es el proceso de <i>hyperparameter tuning</i>.</li>
+
+</ul>
+
+</section>
+<section>
+
+<ul>
+<li>La salida de este proceso es el mejor conjunto de hiper-parámetros</li>
+
+<li>Para evitar <i>over-fitting</i> necesitamos no utilizar el <i>test dataset</i>
+para ajustar los parámetros, ahora tendremos tres conjuntos:
+<i>training</i>, <i>validation</i> y <i>test</i>.</li>
+
+</ul>
+
+
+
+
+
+<div id="orgc60e300" class="figure">
+<p><img src="../images/train-validation-test.png" alt="train-validation-test.png" />
+</p>
+<p><span class="figure-number">Figure 14: </span>Evitando fuga de información entre entrenamiento, selección de hiperparámetros y estimación de generalización</p>
+</div>
+
+</section>
+<section id="slide-orgd893238">
+<h3 id="orgd893238">Recuerda</h3>
+<p>
+Los modelos son como ganado, no mascotas
+</p>
+
+</section>
+<section id="slide-org14e5107">
+<h3 id="org14e5107">Procedimiento</h3>
+<ol>
+<li>Divide  el <i>dataset</i>  en <i>training</i> y <i>testing</i></li>
+
+<li><p>
+Para cada conjunto de hiperparámetros,
+</p>
+
+<p>
+a. Genera un modelo con esos hiperparámetros
+b. Evalúa el modelo (usando <i>hold-out</i> o <i>cross-validation</i>)
+   Esto genera <i>training</i> y <i>validation</i>
+</p></li>
+
+<li>Selecciona el mejor conjunto de hiperparámetros.</li>
+
+<li>Entrena el modelo con esos hiperparámetros usando <b>todo</b> el <i>dataset</i>
+(<i>training</i> y <i>validation</i>)</li>
+
+</ol>
+
+</section>
+<section>
+
+
+<div id="orgcf59b18" class="figure">
+<p><img src="../images/grid-search-process.png" alt="grid-search-process.png" />
+</p>
+<p><span class="figure-number">Figure 15: </span>Esquema del proceso de selección de hiperparámetros, <code>GridSearchCV</code> hace esto por nosotros.</p>
+</div>
+
+
+</section>
+<section id="slide-org4df3af6">
+<h3 id="org4df3af6">Algoritmos: <i>Grid Search</i></h3>
+<p>
+<i>Grid search</i> Dado una rejilla de hiperparámetros, evalúa cada uno de ellos y regresa un ganador.
+</p>
+<ul>
+<li>Simple y fácil de paralelizar (<i>embarrassingly parallel</i>)</li>
+<li>En tiempo de ejecución es el más caro</li>
+
+</ul>
+
+
+<pre class="example">
+from sklearn.ensemble import RandomForestClassifier
+
+classifier = RandomForestClassifier()
+hyper_param_grid = {'n_estimators': [1,10,100,1000,10000], 'max_depth': [1,5,10,20,50,100], 'max_features': ['sqrt','log2'],'min_samples_split': [2,5,10]},
+
+from sklearn.grid_search import GridSearchCV
+
+grid_search = GridSearchCV(classifier, hyper_param_grid, cv = 5, verbose = 3)
+
+grid_search.fit(X, y)
+
+grid_search.best_params_
+
+grid_search.best_score_
+
+## Para eviatr overfit
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+grid_search = GridSearch(classifier, hyper_param_grid, cv=5)
+grid_search.fit(X_train, y_train)
+
+grid_search.predict(X_test)
+
+grid_search.score(X_test, y_test)
+
+## O puedes usar de nuevo cv
+cross_val_score(grid_search, X, y, cv = 5)
+</pre>
+
+
+</section>
+<section id="slide-orgf029a45">
+<h3 id="orgf029a45">Algoritmos: <i>Random Search</i></h3>
+<p>
+<i>Random search</i>, es una pequeña variación del <i>Grid search</i>: sólo evalúa al azar un muestreo de puntos de la rejilla.
+</p>
+<ul>
+<li>Ve el artículo de <a href="http://www.jmlr.org/papers/v13/bergstra12a.html"><b>Random Search for Hyper Parameter Optimization</b></a> de Bergstra y Bengio.</li>
+<li>Funciona casi también como el <i>Grid search</i>, probando, aproximadamente 60 puntos al azar de la rejilla.
+<ul>
+<li>El <i>caveat</i> al menos el 5% de los puntos de la rejilla deben de estar cerca de la solución óptima.</li>
+
+</ul></li>
+<li>Es fácil de paralelizar y fácil de codificar</li>
+
+<li>En ~ scikit-learn~ esta clase se llama <code>RandomizedSearchCV</code></li>
+
+</ul>
+
+
+<p>
+<b>Ejercicio</b> Repite el código anterior pero ahora usa <code>RandomizedSearchCV</code>
+</p>
+
+
+</section>
+<section id="slide-orgcad295c">
+<h3 id="orgcad295c">Algoritmos: <i>Smart hyperparameter search</i></h3>
+<p>
+<i>Smart hyperparameter search</i>. Son procesos secuenciales: escogen unos hiperparámetros, evaluan su calidad y deciden
+   en que región muestrear.
+</p>
+<ul>
+<li>Estos no son paralelizables (por lo menos no de manera trivial)</li>
+<li>Muchos de estas técnicas usan parámetros que deben de ser ajustados</li>
+<li>Las tres variantes más importantes son: <a href="http://epubs.siam.org/doi/book/10.1137/1.9780898718768"><i>Derivative free optimization</i></a>, <a href="https://arxiv.org/abs/1206.2944"><i>Bayesian optimization</i></a> y <a href="https://www.cs.ubc.ca/~hutter/papers/10-TR-SMAC.pdf"><i>Random Forest smart tuning</i></a>.</li>
+<li>Estas técnicas no las veremos en este curso, pero son muy importantes.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-orgc4fa654">
+<h3 id="orgc4fa654">Nested cross-validation</h3>
+<p>
+¿Qué tal si queremos seleccionar entre diferentes familias de modelos?
+</p>
+
+<ul>
+<li><p>
+Para cada modelo en la lista de modelos
+</p>
+
+<p>
+a. Divide el <i>dataset</i> en <i>training</i> (A) y <i>meta-evaluation</i> (B)
+</p>
+
+<p>
+b. Subdivide el set de training de nuevo en <i>training</i> (C) y <i>validation</i> (D)
+</p>
+
+<p>
+c. Genera una lista de hiperparámetros para este modelo
+</p>
+
+<p>
+d. Ejecuta el ajuste de hiperparámetros para seleccionar los mejores hiperparámetros
+</p>
+
+<p>
+e. Evalúa el mejor modelo en B
+</p>
+
+<p>
+f. Guarda la evaluación en una lista (o diccionario) y has lo mismo con el mejor conjunto de hiperparámetros
+</p></li>
+
+</ul>
+
+</section>
+<section>
+
+<ul>
+<li>Selecciona el mejor modelo y el mejor conjunto de hiperparámetros</li>
+
+<li>Entrena el mejor modelo, con sus hiperparámetros en todo el <i>dataset</i></li>
+
+<li>Regresa la mejor evaluación, los mejores hiperparámetros y el modelo entrenado en todo el <i>dataset</i>.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org83dcbbf">
+<h3 id="org83dcbbf">Un ejemplo de implementación: Rayid's magicloop</h3>
+<p>
+<a href="http://github.com/rayidghani/magicloops="><i>Créditos: Rayid Ghani@U Chicago</i></a>
+</p>
+
+<div class="org-src-container">
+
+<pre id="define_hyper_params"><code class="python" >def define_hyper_params():
+    """
+        Esta función devuelve un diccionario con
+        los clasificadores que vamos a utilizar y
+        una rejilla de hiperparámetros
+    """
+    ## Por ejemplo
+    ## classifiers = {
+    ##     'RF': RandomForestClassifier(n_estimators=50, n_jobs=-1),
+    ##     'NB': GaussianNB(), ...
+    ## }
+
+    ## grid = {
+    ##     'RF': {'n_estimators': [1,10,100,1000,10000],
+    ##            'max_depth': [1,5,10,20,50,100],
+    ##            'max_features': ['sqrt','log2'],
+    ##            'min_samples_split': [2,5,10]
+    ##     },
+    ##     'NB': { ... },
+    ##     ...
+    ## }
+
+    return classifiers, grid
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre id="magicloop"><code class="python" >def magic_loop(models_to_run, clfs, grid, X, y):
+    for n in range(1, 2):
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+        for index, clf in enumerate([clfs[x] for x in models_to_run]):
+            logger.debug(models_to_run[index])
+            parameter_values = grid[models_to_run[index]]
+            for p in ParameterGrid(parameter_values):
+                try:
+                    clf.set_params(**p)
+                    logger.debug(clf)
+                    y_pred_probs = clf.fit(X_train, y_train).predict_proba(X_test)[:,1]
+                    logger.debug(precision_at_k(y_test,y_pred_probs,.05))
+                    #plot_precision_recall_n(y_test,y_pred_probs,clf)
+                except IndexError as e:
+                    print('Error:', e)
+                    continue
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<div class="org-src-container">
+
+<pre id="precision_at_k"><code class="python" >def precision_at_k(y_true, y_scores, k):
+    threshold = np.sort(y_scores)[::-1][int(k*len(y_scores))]
+    y_pred = np.asarray([1 if i >= threshold else 0 for i in y_scores])
+    return metrics.precision_score(y_true, y_pred)
+</code></pre>
+</div>
+
+</section>
+<section>
+
+<p>
+<b>Ejercicio</b>: Abre Rstudio y guarda el <code>data.frame</code> de <b>Titanic</b> y guárdalo como archivo <code>feather</code>
+             y en una base de datos <code>sqlite</code>.
+</p>
+
+<p>
+<b>Ejercicio</b>: Lee desde <code>python</code> la base de datos de <b>Titanic</b>.
+</p>
+
+<p>
+<b>Ejercicio</b>: Crea tu versión del <code>magicloop</code>, pero agrega un parámetro para usar
+<code>Grid Seach</code> o <code>Random Grid Search</code>, utiliza <code>cross-validation</code>, no <code>hold-out</code>.
+</p>
+
+<p>
+<b>Ejercicio</b>: Utilízalo para el <i>dataset</i> de <b>Titanic</b>.
+Utiliza los siguientes clasificadores: <i>Random Forest</i>, <i>Logistic Regression</i>, <i>Extra Trees</i>,
+<i>AdaBoost</i>, <i>Logistic Regression</i>, <i>SVC</i>, <i>Naïve Bayes</i>, <i>Decision Trees</i>, <i>DummyClassfier</i> y <i>KNN</i>.
+</p>
+
+<p>
+<b>Ejercicio</b> Reporta la métrica que vas a usar y el porqué la escogiste.
+¿Cuál es el mejor modelo en esa métrica?  ¿Utilizaste algún <i>threshold</i>? Presenta las gráficas
+de <b>prec/rec@k</b> y <b>ROC</b>.
+</p>
+
+<p>
+<b>Ejercicio</b> Compara los tiempos de <code>GridSearch</code> y <code>Random Grid Search</code> (Usa <code>%timeit</code>)
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org9fbb496">
+<h2 id="org9fbb496"><i>Pipeline</i> de Modelos</h2>
+<div class="outline-text-2" id="text-org9fbb496">
+</div></section>
+<section id="slide-org5fe4c3a">
+<h3 id="org5fe4c3a">Algunos pasos antes de modelar</h3>
+<ul>
+<li><i>Data sampling</i></li>
+<li>Crear nuevas variables.</li>
+<li>Discretizar variables cuantitativas.</li>
+<li>Convertir a numéricas las variables cuantitativas.</li>
+<li>Manejo de variables de fecha.</li>
+<li>Unir (<code>merge</code>), ordenar, reshape los conjuntos de datos</li>
+<li>Cambiar las variables categóricas a múltiples variables binarias.</li>
+<li>Resolver que se hará con los datos faltantes.</li>
+<li>Escalamiento y normalización, otras transformaciones.</li>
+<li>Reducción de dimensionalidad.
+<ul>
+<li>PCA, <i>Factor Analysis</i>, <i>Clustering</i>, MCA, CA, t-SNE, etc.</li>
+
+</ul></li>
+<li>etc.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-orge40c7ac">
+<h3 id="orge40c7ac"><i>Pipelines</i> básico</h3>
+<p>
+El objeto <code>Pipeline</code> en <code>scikit learn</code> nos permite encadenar varias
+transformaciones y para luego ser reutilizadas
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >## Versión larga
+from sklearn.pipeline import Pipeline
+pipe = Pipeline([("my_scaler", StandardScaler()), ("my_svm", SVC())])
+pipe.fit(X_train, y_train)
+pipe.score(X_test, y_test)
+
+## Versión corta
+from sklearn.pipeline import make_pipeline
+pipe = make_pipeline(StandardScaler(), SVC())
+pipe.fit(X_train, y_train)
+pipe.score(X_test, y_test)
+</code></pre>
+</div>
+
+
+
+</section>
+<section>
+
+<p>
+Además, si queremos usar <code>cross-validation</code> nos permite evitar
+problemas como el mostrado en la figura <a href="#/slide-orge00b404">16</a> (compara con
+la  figura <a href="#/slide-orgab9d971">17</a> ) cuando se estén creando los diferentes
+pasos para el modelo
+</p>
+
+
+<div id="orge00b404" class="figure">
+<p><img src="../images/bad_pipeline.png" alt="bad_pipeline.png" />
+</p>
+<p><span class="figure-number">Figure 16: </span>Mal procesamiento, esto presenta <i>leakage</i> &#x2026;</p>
+</div>
+
+
+
+</section>
+<section>
+
+
+<div id="orgab9d971" class="figure">
+<p><img src="../images/good_pipeline.png" alt="good_pipeline.png" />
+</p>
+<p><span class="figure-number">Figure 17: </span>Procesamiento correcto en el <i>pipeline</i></p>
+</div>
+
+
+</section>
+<section id="slide-org4a41d9e">
+<h4 id="org4a41d9e">Ejemplo de <i>information leakage</i></h4>
+<p>
+Tomado de <b>Hastie, Tibshirani, and Friedman</b>, <i>The Elements of Statistical Learning</i>
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" ># coding: utf-8
+from sklearn.feature_selection import SelectPercentile, f_regression
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import Ridge
+
+## Generemos un data set de 100 observaciones y 1000 variables
+## X y y serán independientes
+rnd = np.random.RandomState(seed = 1234)
+X = rnd.normal(size=(100, 10000))
+y = rnd.normal(size=(100,))
+
+## Recuerda que no deberíamos de aprender nada de este dataset
+
+## Seleccionamos el percentil 5  de las variables
+select = SelectPercentile(score_func=f_regression, percentile=5).fit(X,y)
+X_selected = select.transform(X)
+
+"R^2 Cross-Validation: {:.2f}".format(np.mean(cross_val_score(Ridge(), X_selected, y, cv=5)))
+</code></pre>
+</div>
+<p>
+R^2 Cross-Validation: 0.91
+</p>
+
+</section>
+<section>
+
+<p>
+Esto obviamente no debería de estar pasando. Lo que ocurre es que el
+<i>feature selection</i> tomó algunas de las 10,000 variables que estaban
+(por puro azar) muy correlacionadas en <i>training</i> y <i>test</i>. Hagámoslo bien
+ahora:
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="ipython" >from sklearn.pipeline import Pipeline
+
+pipe = Pipeline([("select", SelectPercentile(score_func=f_regression, percentile=5)),
+                 ("ridge", Ridge())])
+
+"R^2 Cross-Validation: {:.2f}".format(np.mean(cross_val_score(pipe, X, y, cv=5)))
+</code></pre>
+</div>
+<p>
+R^2 Cross-Validation: -0.10
+</p>
+
+<p>
+Este resultado tiene mucho más sentido. Ahora, el <i>feature selection</i>
+se realizó <b>dentro</b> del <i>cross-validation</i>
+</p>
+
+
+</section>
+<section id="slide-org47f6a4c">
+<h4 id="org47f6a4c">Referencias sobre <i>information leakage</i></h4>
+<p>
+Para más información sobre  <i>information leakage</i> ver <a href="https://www.kaggle.com/c/the-icml-2013-whale-challenge-right-whale-redux/forums/t/4865/the-leakage-and-how-it-was-fixed">aquí</a>, <a href="http://machinelearningmastery.com/data-leakage-machine-learning/">aquí</a> ó en los
+siguientes artículos: 
+n
+</p>
+<ul>
+<li><i>Leakage in Data Mining: Formulation, Detection, and Avoidance</i> S. Kaufman
+et al.  <b>2011</b></li>
+<li><i>No unbiased estimator of the variance of k-fold cross-validation</i> Y. Bengio</li>
+
+</ul>
+<p>
+and Y. Grandvalet  <b>2004</b>
+</p>
+<ul>
+<li><i>A study of cross-validation and bootstrap for accuracy estimation and model
+selection</i> R. Kohavi. <b>1995</b></li>
+<li><i>On Over-fitting in Model Selection and Subsequent Selection Bias in
+Performance Evaluation</i> G.C. Cawley and N. L. C. Talbot <b>2010</b></li>
+<li><i>Medical data mining: insights from winning two competitions</i> S. Rosset, C.
+Perlich, G. Świrszcz, P. Melville and Y. Liu <b>2009</b></li>
+
+</ul>
+
+</section>
+<section id="slide-orgb768825">
+<h3 id="orgb768825"><i>Pipelines</i> con <i>Hyperparameter search</i></h3>
+<pre class="example">
+grid = GridSearchCV(pipe, hyper_param_grid, cv)
+grid.fit(X_train, y_train)
+grid.best_score_
+grid.score(X_test, y_test)
+grid.best_params_
+</pre>
+
+
+</section>
+<section id="slide-org89ae185">
+<h3 id="org89ae185">Ejercicio</h3>
+<ul>
+<li>Modifica tu <code>magic_loop</code> para reescribirlo en términos de <code>Pipeline</code></li>
+<li>Agrega pasos para crear más variables usando polinomios, realiza
+<i>binning</i> en la edad</li>
+
+</ul>
+
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org16ffb6f">
+<h2 id="org16ffb6f">Producción</h2>
+<div class="outline-text-2" id="text-org16ffb6f">
+</div></section>
+<section id="slide-orgeab9ad6">
+<h3 id="orgeab9ad6">Tipos de producción</h3>
+<div class="outline-text-3" id="text-orgeab9ad6">
+</div></section>
+<section id="slide-orgba83469">
+<h4 id="orgba83469"><i>Batch</i></h4>
+<p>
+Se le pasan los datos al modelo, se realiza el <i>scoring</i> y este <i>score</i>
+se escribe a base de datos, archivo, etc.
+</p>
+
+<p>
+El punto de contacto es la base de datos.
+</p>
+
+</section>
+<section id="slide-org01e782b">
+<h4 id="org01e782b">Ligar con otros lenguajes</h4>
+<ul>
+<li>Otros lenguajes (<code>C/C++</code>, <code>Java</code>, <code>Python</code>, <code>clojure</code>, <code>bash</code>, etc.) se conectan
+al lenguaje usado en el modelo, usando las ligas o API implementadas
+en el lenguaje (e.g. <code>Rpy</code>,  <a href="http://www.rcpp.org"><code>Rcpp</code></a>) y continúan con su ejecución.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org3b4171b">
+<h4 id="org3b4171b">Exportar</h4>
+<ul>
+<li>A veces, la evaluación del modelo es simple comparada con la
+construcción del modelo. En este caso, es posible (o deseable)
+transformar la evaluación a otro lenguaje (<code>SQL</code>, <code>Java</code>, <code>etc</code>)
+
+<ul>
+<li>e.g. para árboles: <a href="http://stackoverflow.com/questions/11831794/testing-rules-generated-by-rpart-package">Mi respuesta en Stackoverflow</a></li>
+
+<li><code>PMML</code>
+<ul>
+<li><b>Predictive Model Markup Language</b>.</li>
+<li>Formato en <code>XML</code>.</li>
+<li>Promovido por el Data Mining Group.</li>
+<li>Depende del paquete <code>pmml</code></li>
+<li>Se exporta a otra herramienta que soporte el estándar.</li>
+<li>Funciona en ambas direcciones.</li>
+<li>Quizá nunca funcionó</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section id="slide-orgaaf85dd">
+<h4 id="orgaaf85dd">Servicios Web</h4>
+<ul>
+<li>El modelo  es expuesto a través de un servicio <code>HTTP</code>
+<ul>
+<li>En <code>R</code> se puede utilizar el paquete <a href="https://github.com/trestletech/plumber"><code>plumber</code></a></li>
+<li>En <code>python</code> usando <a href="http://flask.pocoo.org/"><code>Flask</code></a> ( <a href="http://blog.luisrei.com/articles/flaskrest.html">ejemplos</a> )</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section>
+
+<pre class="example">
+from flask import jsonify, request, Flask
+from sklearn.externals import joblib
+
+## Leemos el modelo desde el binario (ver más adelante)
+model = joblib.load('model.pkl')
+
+## Creamos el servicio web
+app = Flask(__name__)
+
+## Sólo un método "predict" que está ligado a la dirección http://0.0.0.0:5000/
+## En este caso recibe el vector que recibe es un texto en json
+## y regresa un json con los resultados
+@app.route('/', methods=['POST'])
+def predict():
+    text = request.form.get('text')
+    results = {}
+    for name, clf in models.iteritems():
+        results[name] = clf.predict([text])[0]
+    return jsonify(results)
+
+if __name__ == '__main__':
+    app.run()
+
+## Se puede invocar con
+## curl -H "Content-type: application/json" \
+## -X POST http://0.0.0.0:5000/ -d '{"text":"Hello Data"}'
+</pre>
+
+
+</section>
+<section>
+
+<p>
+Los pasos a seguir luego del entrenamiento y selección del modelo son:
+</p>
+
+<ul>
+<li>Guarda el modelo entrenado (como <code>rds</code> para <code>R</code> / como <code>pickle</code> o
+como <code>sklearn.externals.joblib</code>)</li>
+
+</ul>
+
+<pre class="example">
+import pickle
+
+## model es el modelo entrenado
+
+## Guardarlo a archivo
+with open("model.pkl", "wb") as f:
+     pickle.dump(model, f)
+
+## Cargarlo de nuevo
+with open("model.pkl", "rb") as f:
+     model_loaded = pickle.load(f)
+</pre>
+
+<ul>
+<li>Crea un servicio web (<code>plumber</code> en <code>R</code>, <code>Flask</code> en <code>python</code>) que
+use el modelo en binario y que tenga un  método que reciba el
+vector de datos (o <i>features</i>).</li>
+
+<li>Este método responde con un <code>json</code> que incluye el vector de datos
+de entrada y la respuesta (predicción) más otra meta-data.</li>
+
+</ul>
+
+</section>
+<section id="slide-org0dc1d19">
+<h4 id="org0dc1d19">Ejercicio</h4>
+<ul>
+<li>Crea un servicio web que despliegue el mejor modelo de
+<code>Titanic</code>. Este servicio debe de recibir un vector de datos que
+y regrese la probabilidad de supervivencia (si aplica).</li>
+
+</ul>
+
+</section>
+<section id="slide-orgaeec336">
+<h3 id="orgaeec336">Problemas</h3>
+<ul>
+<li>Los modelos necesitan ser entrenados, actualizados y desplegados
+(<i>deployed</i>) sin  mucho problema</li>
+<li>La mayoría de las fuentes de datos que alimentan a los modelos no
+son controlados por ustedes</li>
+<li>Varios tipos de modelos</li>
+<li>Varios lenguajes de programación son necesarios
+<ul>
+<li><code>R</code>, <code>python</code>, <code>SQL</code>, <code>spark</code>, etc.</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org7c6fd08">
+<h3 id="org7c6fd08">Más problemas</h3>
+<p>
+Más que problemas son suposiciones con las que muchos modelan:
+</p>
+
+<ul>
+<li>El mundo no sabe que están tratando de modelarlo y por lo tanto no
+toma contra-medidas (No hay <i>adversarios</i>)</li>
+
+<li>El modelo no tiene ningún efecto en el mundo de ningún tipo (No hay
+adaptación, <i>temporal drifting</i> y obvio no hay consecuencias éticas)</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org539b0f4">
+<h3 id="org539b0f4"><b>Adversarial Learning</b></h3>
+<ul>
+<li>Ve por ejemplo:
+<ul>
+<li>Huang, Ling, Anthony D. Joseph, Blaine Nelson,  Benjamin
+I.P. Rubinstein, and J. D. Tygar. <b>2011</b>.
+<i>Adversarial Machine Learning.</i> IEEE Internet Computing 15 (5):
+4–6. <a href="http://dx.doi.org/10.1109/MIC.2011.112">doi:10.1109/MIC.2011.112</a>.</li>
+<li>Laskov, Pavel, and Richard Lippmann. <b>2010</b>.
+<i>Machine Learning in Adversarial Environments.</i>
+Machine Learning. <a href="http://dx.doi.org/10.1007/s10994-010-5207-6">doi:10.1007/s10994-010-5207-6</a>.</li>
+<li>También es importante este libro: Cesa-Bianchi, Nicolò, and Gábor
+Lugosi. <b>2006</b>. <i>Prediction, Learning, and Games.</i> Cambridge
+University Press.</li>
+
+</ul></li>
+
+<li>En cierta medida, uan vez que está en producción, tu eres un
+adversario.
+<ul>
+<li>Ver por ejemplo, el escenario  de <i>Alyssa Frazee</i> <a href="http://www.win-vector.com/blog/2016/09/adversarial-machine-learning/">aquí</a></li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section id="slide-org6487ccc">
+<h3 id="org6487ccc"><b>Temporal drift</b></h3>
+<ul>
+<li>Conforme pasa el tiempo, los datos cambian
+<ul>
+<li>El mundo cambia con el tiempo, y así nuestro modelos sobre ese mundo</li>
+<li><b>Hackeo</b> de los modelos (<b>adversarial domains</b>) intencionales</li>
+
+</ul></li>
+
+<li>¿Cómo identificamos que hubo <b>drift</b>?
+<ul>
+<li>De tal manera que podamos actualizar los modelos, esto es
+necesario ya que el patrón cambió</li>
+<li>Esto es un área activa de investigación</li>
+
+</ul></li>
+
+<li>¿Ideas?
+<ul>
+<li>Modelos de ensamble con diferentes ventanas de tiempo de entrenamiento</li>
+<li>Reentrenamiento frecuente</li>
+<li>Comparación de modelos: entrenamos con datos actuales contra
+datos históricos quizá permitan detectar <b>drift</b></li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+<section id="slide-orgd7d7551">
+<h3 id="orgd7d7551">Reproducibilidad</h3>
+<ul>
+<li>Todos los experimentos y los modelos productivos deben de ser reproducibles.
+<ul>
+<li>Más difícil de lo que parece&#x2026;</li>
+<li>Requiere código histórico, datos históricos, formatos originales, <b>feature extraction</b>, etc.</li>
+
+</ul></li>
+
+<li>Si hay <b>adversarial domains</b> hay que saber que no evolucionan todos iguales.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org2ee2b4d">
+<h3 id="org2ee2b4d">Gobernanza de Modelos</h3>
+<ul>
+<li>Ventanas de entrenamiento</li>
+<li>Publicación de modelos
+<ul>
+<li>¿ <code>PMML</code> ? ¿Serialización? ¿Imágenes de <code>Docker</code>?</li>
+
+</ul></li>
+<li>Selección de modelos</li>
+
+</ul>
+
+
+</section>
+<section id="slide-orgc03905c">
+<h3 id="orgc03905c">Almacenando los modelos</h3>
+<p>
+Dado lo anterior es importante almacenar <b>todo</b>:
+</p>
+<ul>
+<li>Datos de entrenamiento, validación y prueba</li>
+<li>Hiper-parámetros</li>
+<li>El modelo</li>
+<li>Los resultados: métricas</li>
+<li>Desempeño en producción</li>
+
+</ul>
+
+</section>
+<section>
+
+<p>
+Recordando a nuestra base de datos relacional, teníamos los siguientes
+<i>esquemas</i>:
+</p>
+
+<ul>
+<li><code>raw</code>:  Datos <i>as-is</i></li>
+<li><code>clean</code>  o <code>gold</code>: Datos limpios</li>
+<li><code>semantic</code>:  Escoge el objeto(s) de tu <b>modelo</b>, unifica en una
+tabla <i>tidy</i> (si aplica).</li>
+
+</ul>
+
+</section>
+<section>
+
+<p>
+Vamos a agregar:
+</p>
+
+<ul>
+<li><code>features</code>:  Nuevas variables, variables <i>transformadas</i> y variables <i>derivadas</i></li>
+<li><code>shameful</code> o <a href="https://www.explainxkcd.com/wiki/images/d/d0/code_quality_2.png"><code>burning_bus</code></a>: Todos aquellos <i>hacks</i> que algún día nos alcanzarán</li>
+<li><code>experiments</code> o <code>playground</code>: Experimentos y transformaciones de datos</li>
+<li><code>models</code>: Modelos, <i>metadatos</i> de los modelos, conjuntos de
+entrenamiento, etc.</li>
+<li><code>metrics</code>: Resultados de los modelos <i>on-line</i> y <i>off-line</i></li>
+<li><code>ontology</code>  [Opcional]</li>
+
+</ul>
+
+</section>
+<section>
+
+<p>
+Es importante recordar que esto es un diseño conceptual basado en una
+base de datos relacional, el siguiente semestre veremos <i>data lakes</i> y
+será un poco diferente, pero la esencia es la misma.
+</p>
+
+
+
+
+<div id="orgf8528f0" class="figure">
+<p><img src="../images/db_schemas.png" alt="db_schemas.png" />
+</p>
+<p><span class="figure-number">Figure 18: </span>Relaciones entre los diferentes esquemas</p>
+</div>
+
+
+</section>
+<section id="slide-orgf1c34d6">
+<h3 id="orgf1c34d6">Almacenando los modelos: Metadatos</h3>
+<p>
+Ejemplo de metadata de experimento
+</p>
+
+<pre class="example">
+{
+    "tiempo": "2016-10-20 02:36:45",
+    "proceso": "",
+    "modelo": "",
+    "version": "",
+    "parametros": {  },
+    "test_id": "UUID",
+    "output": ["0.98227654 de average accuracy sobre 15 resultados"],
+    "resultados": "",
+    "duracion": {
+        "entrenamiento": 78990,
+        "prueba": 1340
+    },
+    "query": "select * from ...",
+    "records": 456987123
+}
+</pre>
+
+<p>
+¿Otras ideas?
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org33b7bb6">
+<h2 id="org33b7bb6">Evaluación <i>On-line</i></h2>
+<div class="outline-text-2" id="text-org33b7bb6">
+</div></section>
+<section id="slide-org9c9c4c5">
+<h3 id="org9c9c4c5"><i>Baseline</i></h3>
+<ul>
+<li>Utilizaremos algunos modelos idealizados:
+<ul>
+<li>Modelo nulo
+<ul>
+<li>Nos enseña cuál es el mínimo.</li>
+
+</ul></li>
+<li>Modelo <code>Bayes rate</code>
+<ul>
+<li>Indica cuál puede ser el máximo posible.</li>
+
+</ul></li>
+<li>El mejor modelo de una sóla variable.
+<ul>
+<li>Indica que es lo mejor que puede hacer un modelo simple.</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org4d2d42d">
+<h4 id="org4d2d42d">Modelo nulo</h4>
+<ul>
+<li>Es aquel modelo que quieres vencer (es el mínimo, <i>lower bound</i>).</li>
+
+<li>Dos modelos típicos: <b>constante</b> e <b>independiente</b></li>
+
+<li>El modelo constante, siempre devuelve la misma respuesta para todas las ocasiones.
+<ul>
+<li>e.g. Si es categórica la salida, el modelo siempre devuelve el valor más popular
+(se equivoca menos). Si es numérica regresará la media (su desviación cuadrática es menor).</li>
+
+</ul></li>
+
+<li>El modelo independiente, no guarda ninguna relación o interacción
+entre las variables de entrada y salida, puede ser un modelo al azar
+(e.g. tirando una moneda para decidir en una clasificación binaria).</li>
+
+</ul>
+<ul>
+<li>En <code>sklearn</code> la clase que implementa esto es <code>DummyClassifier</code></li>
+
+</ul>
+
+
+</section>
+<section id="slide-orge332886">
+<h4 id="orge332886">Mejor modelo de una variable</h4>
+<ul>
+<li>Un modelo complicado no puede justificarse si no puede mejorar
+un modelo simple de una sola variable.</li>
+
+<li>Muchos clientes o usuarios que pueden manejar MS Excel y sus <code>pivot tables</code>
+pueden generar modelos de una sola variable, ellos querrán comparar a este
+nivel, por lo que siempre es bueno tenerlos en mente.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-org236be12">
+<h3 id="org236be12">A/B testing</h3>
+<ul>
+<li><b>A/B testing</b> es el método utilizado para responder preguntas como
+<i>¿Qué color es mejor para este botón: azul o rojo?</i> ó preguntas como
+<i>¿Es el nuevo modelo mejor que el anterior?</i></li>
+
+</ul>
+
+</section>
+<section id="slide-org9900233">
+<h4 id="org9900233">Setup</h4>
+<ul>
+<li>Hay dos modelos (o dos diseños): el <b>nuevo</b> y el <b>actual</b></li>
+<li>El tráfico (o los datos) se dividirán en dos grupos \(A\) (<b>control</b>)
+y \(B\) (<b>experimento</b>)</li>
+<li>El flujo \(A\) se dirige al modelo <b>actual</b> y el flujo \(B\) al modelo
+<b>nuevo</b></li>
+<li>Se compara su desempeño y se toma una decisión, si el modelo <b>nuevo</b>
+tiene un desempeño mejor que el <b>actual</b>, el modelo <b>nuevo</b>
+sustituye al modelo <b>actual</b></li>
+<li>Esto es simplemente una <i>prueba de hipótesis</i> comparando la
+hipótesis <i>nula</i> (\(H_0\)) con la hipótesis <i>alternativa</i> (\(H_1\)).
+<ul>
+<li>La pregunta es <i>¿Este nuevo modelo produce un cambio
+estadísticamente significativo en esta métrica?</i></li>
+<li>\(H_0\) : <i>el nuevo modelo no cambia el valor promedio de la métrica</i></li>
+<li>\(H_1\): <i>el nuevo modelo cambia el valor promedio de la métrica</i></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org824b569">
+<h4 id="org824b569">A/B testing: pasos</h4>
+<ol>
+<li>Divide de manera aleatoria en grupos de <b>control</b> y
+<b>experimentación</b></li>
+<li>Observa el comportamiento de ambos grupos en los métodos propuestos</li>
+<li>Calcula las estadísticas de prueba</li>
+<li>Calcula el <i>p-value</i></li>
+<li>Decide</li>
+
+</ol>
+
+
+</section>
+<section id="slide-org047292b">
+<h4 id="org047292b">A/B testing: Cuestiones a tener en cuenta</h4>
+<ul>
+<li>Revisa el artículo <a href="http://www.exp-platform.com/Documents/puzzlingOutcomesInControlledExperiments.pdf"><i>Trustworthy Online Controlled Experiments: Five
+Puzzling Outcomes Explained</i></a> de Kohavi et al.</li>
+
+<li>Realiza antes (o contínuamente) un <b>A/A testing</b>, esto te ayuda a
+probar tu método de separación.</li>
+<li>Recuerda que hay varias métricas: de negocio, métricas vivas,
+métricas <i>off-line</i> y métricas de entrenamiento lleva un histórico de
+todas y revísalas continuamente te pueden ayudar a detectar un
+<b>temporal drift</b> (e.g. evalúa la métrica <i>off-line</i> con datos
+"vivos")</li>
+
+</ul>
+
+</section>
+<section>
+
+<ul>
+<li>¿ <i>One-side test</i> (efecto en una dirección: ¿es mejor?) o <i>Two-side test</i> (efecto
+en dos direcciones: ¿puede ser mejor o peor?)?</li>
+<li><b>FP</b> Rechazar \(H_0\) cuando \(H_0\) es verdadera: Aquí significa
+cambiar a un modelo que no mejora el modelo <b>actual</b> ¿Qué <i>p-value</i>
+es aceptable para el negocio?</li>
+<li>Calcula <b>antes</b> del experimento el número de observaciones.</li>
+<li>¿La métrica tiene una distribución gaussiana? (e.g. <b>AUC</b> no es
+un promedio, por lo que no aplica el teorema del límite central)</li>
+
+</ul>
+
+
+</section>
+<section id="slide-orge46e3cc">
+<h3 id="orge46e3cc"><i>Multiarmed bandit</i></h3>
+<div class="outline-text-3" id="text-orge46e3cc">
+</div></section>
+<section id="slide-org359a74a">
+<h4 id="org359a74a">Referencia</h4>
+<p>
+Consultar <i>Bandit Algorithms for Website Optimization</i> de
+O'Reilly. Aquí lo estamos adaptando a modelos, no a diseño web.
+</p>
+
+</section>
+<section id="slide-orgf3af515">
+<h4 id="orgf3af515">Explotación y Exploración</h4>
+<ul>
+<li><i>Exploración</i>: Aprender nuevas cosas</li>
+
+<li><i>Explotación</i>: Tomar ventaja de lo que ya sabes</li>
+
+<li>Podemos usar estos dos conceptos para caracterizar el proceso de
+<b>A/B testing</b>:</li>
+
+<li>Un corto periodo de <i>exploración</i>, en la cual se asignan  igual número de
+datos a los grupos \(A\) y \(B\).</li>
+<li>Un periodo largo de <i>explotación</i> en la cual mandas todos los datos
+a la versión del modelo más exitosa.</li>
+
+</ul>
+
+</section>
+<section id="slide-orgc4195cd">
+<h4 id="orgc4195cd">Problemas con A/B testing</h4>
+<ul>
+<li>Brinca directamente de <i>exploración</i> a <i>explotación</i>.</li>
+
+<li>Durante la etapa de <i>exploración</i> gasta recursos en una opción
+inferior para poder obtener toda los datos requeridos.</li>
+
+</ul>
+
+</section>
+<section id="slide-org0d531aa">
+<h4 id="org0d531aa">¿ <i>Multiarmed bandit</i> ?: Vocabulario</h4>
+<ul>
+<li>Cada opción que tengamos (e.g modelos \(\{ m_1, m_2, \ldots, m_n\}\))
+será llamado <i>arm</i> (brazo).</li>
+
+<li><i>Recompensa</i>, \(r\), es una médida  de éxito, pedimos que se pueda medir y
+que se pueda ordenar (e.g. \(r \in  \mathbf{R}\))</li>
+
+</ul>
+
+</section>
+<section id="slide-org6531d43">
+<h4 id="org6531d43"><i>Bandit problem</i></h4>
+<ul>
+<li>Tenemos una máquina de moneda  con \(N\) brazos que
+podemos jalar.</li>
+
+<li>Cuando son actuados, cada uno de estos brazos da una
+recompensa, pero la recompensa no está garantizada (e.g. el brazo 1 puede
+darnos una recompensa \(r=1\) únicamente el \(1\%\) de las
+veces.).</li>
+
+<li>Además no sabemos qué brazo da qué recompensa. Esto lo
+debemos de hacer experimentando, i.e. jalando los brazos.</li>
+
+<li>Sólo recibimos información (recompensa) del brazo que
+jalamos.</li>
+
+<li>Cada vez que experimentamos con un brazo que no es el mejor brazo,
+perdemos recompensa, ya que , al menos en principio, pudimos haber
+jalado oun mejor brazo.</li>
+
+<li>Un algoritmo solución debe de dar una regla (o función) que
+seleccione brazos en una secuencia, además debe de balancear la
+explotación/exploración mientras que maximiza la recompensa recibida.</li>
+
+</ul>
+
+</section>
+<section id="slide-org9ee4a26">
+<h4 id="org9ee4a26">Ejemplo: <i>Epsilon-greedy algorithm</i></h4>
+<ul>
+<li>Supón que hay dos modelos a analizar.
+
+<ul>
+<li>La idea es muy sencilla: Tira una moneda, si sale águila, exploras
+por un momento (con probabilidad \(\epsilon\), si sale cara, debes
+de explotar (con probabilidad \(1 - \epsilon\)).</li>
+
+<li>Si debes de explotar, el algoritmo revisa la métrica, determina
+cuál es el modelo con la mejor métrica en el pasado, y aplica ese
+modelo a los datos.</li>
+
+<li>Si debes de explorar, el algoritmo tira otra moneda (ahora justa)
+para elegir cualquiera de los dos modelos.</li>
+
+<li>Luego de seleccionar, actualiza el valor estimado del brazo.</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgc240285">
+<h4 id="orgc240285">Ejemplo: <i>Softmax algorithm</i></h4>
+<ul>
+<li>Hay un problema con el algoritmo <i>epsilon-greedy</i>: explora las opciones
+completamente al azar, sin tomar en cuenta sus méritos.
+
+<ul>
+<li>Si la diferencia en las tasas de recompensa es pequeña, debes de explorar
+mucho más para determinar correctamente cual de las dos opciones es mejor.</li>
+
+<li>Si la diferencia es muy grande, debes de explorar menos para estimar
+correctamente cuál es la mejor opción.</li>
+
+</ul></li>
+
+<li>El nuevo algoritmo necesita tomar en cuenta acerca de las diferencias en los
+valores estimados de cada brazo. A esto se le conoce como <i>exploración
+estructurada</i>.</li>
+
+</ul>
+
+</section>
+<section>
+
+<ul>
+<li>El algoritmo <i>softmax</i> escoge cada brazo en proporción a su valor estimado,
+según el siguiente algoritmo:
+
+<ol>
+<li>Establece \(\tau\), la temperatura (En los sistemas físicos a mayor
+temperatura, existen más oscilaciones moleculares, i.e. más azar)</li>
+
+<li><p>
+En cada tiempo \(T\) seleccionamos un brazo usando 
+</p>
+
+<p>
+\[
+     \frac{\mathrm{e}^{\frac{r_i}{\tau}}}{\sum_j{\mathrm{e}^{\frac{r_j}{\tau}}}}
+     \]
+</p></li>
+
+<li>Actualiza el valor de tu estimado.</li>
+
+</ol></li>
+
+<li>Existen otros algoritmos más elaborados.</li>
+
+</ul>
+
+
+</section>
+<section id="slide-orgc9aed17">
+<h3 id="orgc9aed17">Ejercicio</h3>
+<p>
+¿Cómo modificarías el servicio web que creaste para implementar
+evaluación en línea y que además permita ejecutar un algoritmo
+<i>multiarmed bandit</i>?
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb939c2a">
+<h2 id="orgb939c2a">¿Por qué de todo esto?</h2>
+<ul>
+<li><b>Malas noticias</b>: Aprender a partir de casos particulares (es decir, lo que
+hace <i>machine learning</i>) no es un problema bien definido</li>
+
+<li>Esto en general se llama <i>inducción</i></li>
+
+<li>En palabras de <b>David Hume</b>:</li>
+
+</ul>
+
+<blockquote nil>
+<p>
+Instancias de las cuales no tenemos ninguna experiencia
+se parecen a aquellas de las cuales tenemos experiencia
+</p>
+</blockquote>
+
+</section>
+<section id="slide-org2d61c27">
+<h3 id="org2d61c27">Problema de la inducción</h3>
+<ul>
+<li>Y hay un problema con su nombre: <a href="http://plato.standford.edu/entries/induction-problem"><i>el problema de la inducción</i></a>, planteado por
+<b>Sextus Empiricus</b> en el siglo I E.C.: <i>una regla universal no puede ser
+establecida a partir de un conjunto incompleto de instancias</i>.
+
+<ul>
+<li>Si son creyentes <b>Ockham</b> (el de la navaja) también tiene cosas que decir al respecto.</li>
+
+</ul></li>
+
+<li><b>David Hume</b> lo expresó indicando la circularidad: La única justificación para
+la inducción es el método inductivo: <i>funciona para unos casos, esperamos que
+funcione para todos los problemas inductivos</i>.</li>
+
+</ul>
+
+</section>
+<section>
+
+<ul>
+<li><b>J. S. Mill</b> <i>¿Por qué una instancia es suficiente para una inducción completa,</i>
+<i>cuando en otras ocasiones, saber hacer de miles de instancias, no nos lleva a</i>
+<i>establecer una proposición universal?</i></li>
+
+<li>En tiempos más recientes, <b>Nelson Goodman</b> y su <i>acertijo de la inducción</i>:</li>
+
+</ul>
+
+<blockquote nil>
+<p>
+Algo es "grue" si y sólo si ha sido observado como <i>verde</i> antes de cierto
+tiempo \(t\) y azul a partir de ahí. Si todas las esmeraldas son verdes y "grue"
+¿Por qué suponemos que luego de \(t\) serán todas verdes y ninguna "grue"?
+</p>
+</blockquote>
+
+</section>
+<section id="slide-org9ecdfee">
+<h3 id="org9ecdfee"><i>No free lunch theorem</i></h3>
+<p>
+Ningún algoritmo puede ser m ejor que cualquier otro cuando sea evaluado sobre
+todos los posibles problemas de clasificación, así el desempeño de cualquier
+algoritmo sobre todo el conjunto de todos los posibles problemas de aprendizaje
+no es mejor que adivinar.
+</p>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org3436a9b">
+<h2 id="org3436a9b">¿Qué nos faltó de cubrir?</h2>
+<ul>
+<li><b>On-line learning</b>: Exponer a los <i>learners</i> (algoritmos) a los datos uno a la
+vez, sólo vimos <i>batch</i>.</li>
+
+<li><b>Predicción conforme</b>: ¿Qué hago para ver como generaliza mi modelo si el
+entrenamiento es <i>online</i>? ¿Qué hago con diferentes tipos de ruido?</li>
+
+<li>Series de tiempo (que no cumplen con las condiciones de análisis de series de
+tiempo clásicas) i.e. <i>filtros de Kalman extendidos</i>, <i>RNN</i>, <i>Feedforward
+ANN</i>, etc.</li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orge42f072">
+<h2 id="orge42f072">Conclusiones</h2>
+<ul>
+<li>Debemos tener conocimiento de la distribución</li>
+
+<li>Los <i>features</i> son tan importantes o más que los datos</li>
+
+<li>Y los hiperparámetros&#x2026;</li>
+
+<li>Al final el modelo</li>
+
+<li>Hay que tener cuidado con la <i>fuga de información</i> para generalizar: Usa
+cross-validation, etc.</li>
+
+</ul>
+
+
+
+
+<ul>
+<li>Los problemas no acaban con el primer modelo, hay que ponerlo en producción y
+el problema de la reproducibilidad continúa ahí</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<p> Creada por Adolfo De Unánue. </p>
+<script src="https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/head.min.js"></script>
+<script src="https://cdn.jsdelivr.net/reveal.js/3.0.0/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+width: 1200,
+height: 800,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://cdn.jsdelivr.net/reveal.js/3.0.0/lib/js/classList.js', condition: function() { return !document.body.classList; } }]
+});
+</script>
+</body>
+</html>
