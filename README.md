@@ -40,3 +40,6 @@ Base de datos de jugadores de baseball
 
 https://www.kaggle.com/open-source-sports/baseball-databank
 
+Artículo LDA en paralelo
+https://alex.smola.org/papers/2010/SmoNar10.pdf
+
