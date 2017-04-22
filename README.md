@@ -48,3 +48,7 @@ http://ellisp.github.io/blog/2017/01/05/topic-model-cv
 
 Ejemplo parallel
 https://gist.github.com/benmarwick/4541872
+
+Lista de controles para LDA
+
+https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
