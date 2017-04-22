@@ -45,3 +45,6 @@ https://alex.smola.org/papers/2010/SmoNar10.pdf
 
 Artículo Cross-Validation LDA en paralelo:
 http://ellisp.github.io/blog/2017/01/05/topic-model-cv
+
+Ejemplo parallel
+https://gist.github.com/benmarwick/4541872
