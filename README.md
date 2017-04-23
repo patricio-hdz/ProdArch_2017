@@ -52,3 +52,7 @@ https://gist.github.com/benmarwick/4541872
 Lista de controles para LDA
 
 https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
+
+Articulo de apoyo muy explicado para LDA
+
+https://eight2late.wordpress.com/2015/09/29/a-gentle-introduction-to-topic-modeling-using-r/
