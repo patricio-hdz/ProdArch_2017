@@ -56,3 +56,7 @@ https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
 Articulo de apoyo muy explicado para LDA
 
 https://eight2late.wordpress.com/2015/09/29/a-gentle-introduction-to-topic-modeling-using-r/
+
+Cómo meter neo4j a un dashboard de Shiny
+
+https://nicolewhite.github.io/2014/06/30/create-shiny-app-neo4j-graphene.html
