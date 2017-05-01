@@ -9,7 +9,7 @@ sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get install -y r-base=3.4.0-1xenial0
 sudo apt-get install -y python-pip
-
+pip install --upgrade pip
 
 
 
