@@ -1,0 +1,1 @@
+diapause http //www.foxnews.com/story/0,2933,183034,00.html spike

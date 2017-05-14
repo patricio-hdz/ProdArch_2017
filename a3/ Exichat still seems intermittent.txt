@@ -1,0 +1,1 @@
+web problem investigation +0100 > web > problem investigation ns1.kumo.com eugen ns2.kumo.com icmp_seq=1 ttl=237 time=211 icmp_seq=2 ttl=237 time=219 icmp_seq=3 ttl=237 time=205 icmp_seq=4 ttl=237 time=205 icmp_seq=5 ttl=237 time=208 ms registrar http leitl http http

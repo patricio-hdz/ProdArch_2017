@@ -1,0 +1,1 @@
+science fiction writer physicist example http http http http http //www.ctie.monash.edu.au/hargrave/Cornall_Terry_328.pdf sci.physics.research http as_ugroup=sci.physics.research as_usubject= as_uauthors= lr=lang_en as_drrb=q as_qdr= as_mind=1 as_minm=1 as_miny=1981 as_maxd=24 as_maxm=4 as_maxy=2008 safe=off http > values/knowledge/intelligent/life rest

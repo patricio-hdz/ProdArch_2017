@@ -1,0 +1,1 @@
+http full=true article bomb power

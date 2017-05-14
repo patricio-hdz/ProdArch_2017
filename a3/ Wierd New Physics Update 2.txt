@@ -1,0 +1,1 @@
+particle note s h/2*pi radius vorticon eyewall r ^ mass m h^2*G/ c^4*r^3 energy h^2*G/ c^4*r^3 X momentum h^3*G^2/ c^6*r^4 = second +/- h^2*G^2/ c^6*r^4 dimensionless eye lash part model problem solution -Clay

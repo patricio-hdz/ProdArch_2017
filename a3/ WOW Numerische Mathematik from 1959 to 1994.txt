@@ -1,0 +1,1 @@
+god http //dz-srv1.sub.uni-goettingen.de/sub/digbib/loader did=D196287

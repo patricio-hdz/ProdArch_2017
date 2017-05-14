@@ -1,0 +1,1 @@
+guide http //sunearth.gsfc.nasa.gov/eclipse/SEpubs/TP212762b.pdf http //sunearth.gsfc.nasa.gov/eclipse/SEpubs/TP212762a.pdf page http //sunearth.gsfc.nasa.gov/eclipse/SEmono/TSE2006/TSE2006.html email amara vita ftp //ftp.amara.com/pub/resume.txt http something

@@ -1,0 +1,1 @@
+http //www.ncbi.nlm.nih.gov/entrez/query.fcgi cmd=search doptcmdl=DocSum term=molecular+biology+of+the+cell+AND+mboc4 % % part attachment URL http >

@@ -1,0 +1,1 @@
+time http //www.nytimes.com/2004/12/27/technology/27kurzweil.html

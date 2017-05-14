@@ -1,0 +1,1 @@
+set conference https //www.shop.alcor.org/displayProductDocument.hg productId=1 categoryId=2 http //jaydugger.suprglu.com

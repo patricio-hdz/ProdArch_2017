@@ -1,0 +1,1 @@
+section note s http //parallel.hpc.unsw.edu.au/rks/docs/occam/occam.html bibliography quantum multiverse machine theory
