@@ -2,6 +2,7 @@ version: "3"
 
 services:                                                                               
   master:
+    container_name: master
     image: gettyimages/spark
     command: bin/spark-class org.apache.spark.deploy.master.Master -h master
     hostname: master
