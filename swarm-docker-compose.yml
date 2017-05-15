@@ -40,7 +40,7 @@ services:
       SPARK_PUBLIC_DNS: localhost
     deploy:
       mode: replicated
-      replicas: 8
+      replicas: 20
     expose:
       - 7012
       - 7013
