@@ -1,0 +1,72 @@
+version: "3"
+
+services:                                                                               
+  master:
+    image: gettyimages/spark
+    command: bin/spark-class org.apache.spark.deploy.master.Master -h master
+    hostname: master
+    environment:
+      MASTER: spark://master:7077
+      SPARK_PUBLIC_DNS: localhost
+
+    expose:
+      - 7001
+      - 7002
+      - 7003
+      - 7004
+      - 7005
+      - 7006
+      - 7077
+      - 6066
+      - 4040
+    ports:
+      - 4040:4040
+      - 6066:6066
+      - 7077:7077
+      - 8080:8080
+    networks:
+      - extr
+
+
+  worker:
+    image: gettyimages/spark
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    hostname: worker
+    environment:
+      SPARK_WORKER_CORES: 1
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_WORKER_PORT: 8881
+      SPARK_WORKER_WEBUI_PORT: 8081
+      SPARK_PUBLIC_DNS: localhost
+    deploy:
+      mode: replicated
+      replicas: 5
+    expose:
+      - 7012
+      - 7013
+      - 7014
+      - 7015
+      - 7016
+      - 8881
+    ports:
+      - 7071:7071
+    depends_on:
+      - master
+    networks:
+      - extr
+      
+      
+  client:
+    image: johnydickens/spark-client:v2
+    command: /bin/bash
+    hostname: client
+    stdin_open: true
+    tty: true
+    networks:
+      - extr
+
+
+
+networks:
+  extr:
+    external: true
