@@ -57,7 +57,7 @@ services:
       
       
   client:
-    image: johnydickens/spark-client:v2
+    image: danlexpp/lda_spark:0.1
     command: /bin/bash
     hostname: client
     stdin_open: true
