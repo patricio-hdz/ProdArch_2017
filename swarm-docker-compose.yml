@@ -5,6 +5,9 @@ services:
     image: gettyimages/spark
     command: bin/spark-class org.apache.spark.deploy.master.Master -h master
     hostname: master
+    deploy:
+      placement:
+        constraints: [node.role == manager]
     environment:
       MASTER: spark://master:7077
       SPARK_PUBLIC_DNS: localhost
@@ -62,6 +65,9 @@ services:
     hostname: client
     stdin_open: true
     tty: true
+    deploy:
+      placement:
+        constraints: [node.role == manager]
     networks:
       - extr
 
