@@ -1,55 +1,57 @@
-1 Abstract
+1 Abstract  (Todos domingo)
 
 -	Máximo 2 párrafos.
 -	 This article shows a way to build a recommendation system for new users encountering a large chain of mails …..
 -	Mencionar el uso de LDA
 -	Mencionar que se utilizó docker, luigi, spark y aws sin el detalle.
 
-2 Introduction
+2 Introduction (Sin cambios y mañana lo revisamos)
 
-2.1 Main Goal 
+2.1 Main Goal (Max)
 -	Exponer la idea de encontrar los temas principales del extropy chat.
 -	Exponer la idea de encontrar los actores principales del extropy chat.
 -	Externar la necesidad de implementar un producto de datos replicable, portable y escalable.
 
-2.2 Data Stories
+2.2 Data Stories (Max)
 -	Reformular las data stories para planteralas de tal forma que contextualicemos los dos primeros main goals, es decir, que primero buscabamos maneras de obtener respuestas a dichos goals y finalmente le encontramos un uso en recomendaciones.
 
 -	No mencionar los data stories originales ya que varios de esos temas no se resolvieron.
 
-3 NUEVO CHAPTER “Modelos” 
+3 NUEVO CHAPTER “Modelos” (Alex)
 
 -	Explicación de los modelos, motivación, necesidades, medidas de ajuste, otros.
 -	Esta sección servirá como motivación de las decisiones que se tomarón tanto para el pipeline como para la arquitectura.
 
-4 Pipeline
+4 Pipeline (Todos mañana)
 
 -	Revisar la cantidad de pasos del pipeline:
 -	Actualizar los códigos usados.
 - 	Editar los códigos con los finales () (Esto hacerlo al final porque todavía podemos terminar algunas cosas pendientes)
 
-4.1 Extropy Chat-Raw Data
+4.1 Extropy Chat-Raw Data (Daniel)
 
 -	Mencionar hasta nuestra útlima descarga cuántos archivos obtuvimos y en MB.
 
-4.2 Raw Data – Clean Data Set (Cambiar el título a algo estilo: Divide y venceras)
+4.2 Raw Data – Clean Data Set (Cambiar el título a algo estilo: Divide y venceras) (Daniel)
 
 -	Se juntan los archivos mensuales en archivos por año para disminuir el posible error en el parseo.
 
 -	Mencionar que se inicio con # cantidad de archivos y se obtuvieron #2 cantidad de archivos (para facilitar al lector, así lo vimos en un par de artículos jaja).
 
-4.3 Clean Data Set – Json
+4.3 Clean Data Set – Json (Daniel)
 
 -	La finalidad de obtener 1 JSON es tener un “algo” a lo cual podamos tirarle queries.
 -	Mencionar que se inicia con #2 cantidad de archivos y se obtiene finalmente 1 archivo JSON.
 
 
 
-4.4 JSON – CSV
+4.4 JSON – CSV 
 
 -	Eliminar este paso del pipeline.
 
-Nuevo 4.4 JSON-txts by Subject
+Nuevo 4.4 JSON-txts by Subject (Daniel)
+
+- Mencionar como se tranformo la idea de ir a un CSV hasta lo que terminamos haciendo.
 
 -	Mencionar cuántos Subjects tenemos que es equivalente al número de txts obtenidos.
 
