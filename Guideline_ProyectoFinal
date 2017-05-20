@@ -28,28 +28,34 @@
 -	Actualizar los códigos usados.
 - 	Editar los códigos con los finales () (Esto hacerlo al final porque todavía podemos terminar algunas cosas pendientes)
 
-4.1 Extropy Chat-Raw Data (Daniel)
+4.1 Luigi (Daniel)
+
+- Por qué Luigi.
+- Código.
+- Pipeline ejecutado mediante código.
+
+4.2 Extropy Chat-Raw Data (Daniel)
 
 -	Mencionar hasta nuestra útlima descarga cuántos archivos obtuvimos y en MB.
 
-4.2 Raw Data – Clean Data Set (Cambiar el título a algo estilo: Divide y venceras) (Daniel)
+4.3 Raw Data – Clean Data Set (Cambiar el título a algo estilo: Divide y venceras) (Daniel)
 
 -	Se juntan los archivos mensuales en archivos por año para disminuir el posible error en el parseo.
 
 -	Mencionar que se inicio con # cantidad de archivos y se obtuvieron #2 cantidad de archivos (para facilitar al lector, así lo vimos en un par de artículos jaja).
 
-4.3 Clean Data Set – Json (Daniel)
+4.4 Clean Data Set – Json (Daniel)
 
 -	La finalidad de obtener 1 JSON es tener un “algo” a lo cual podamos tirarle queries.
 -	Mencionar que se inicia con #2 cantidad de archivos y se obtiene finalmente 1 archivo JSON.
 
 
 
-4.4 JSON – CSV 
+Eliminar 4.4 JSON – CSV 
 
 -	Eliminar este paso del pipeline.
 
-Nuevo 4.4 JSON-txts by Subject (Daniel)
+4.5 JSON-txts by Subject (Daniel)
 
 - Mencionar como se tranformo la idea de ir a un CSV hasta lo que terminamos haciendo.
 
@@ -59,26 +65,27 @@ Nuevo 4.4 JSON-txts by Subject (Daniel)
 
 - 	Poner una nota acerca de en qué consiste el archivo stopwords, que esencialmente son palabras que generan problemas los modelos de análisis de textos.
 
-4.5 Implementación de Modelos
+4.6 Implementación de Modelos (Alex)
 
 -	Explicar el código de spark.
 - 	Mencionar tiempos de ejecución, mejoras en performance gracias al cluster, etc.
 -	Mencionar que escribe al S3.
 
-4.6 Shiny Dashboard
+4.7 Shiny Dashboard (Patricio)
 
 -	Explicar código de R.
 - 	Obtención de los datos.
 -	Explicar decisión del tipo de dashboard.
 
-5 Data-product-architecture
+
+5 Data-product-architecture (Max)
 
 -	Reforzar ideas de portabilidad, escalabilidad y portabilidad.
-5.1 Architecture tools (antes Description of the architecture)
+5.1 Architecture tools (antes Description of the architecture) (Max)
 
 -	Mencionar el mótivo del uso de docker, luigi, aws, spark.
 
-5.2 Pipeline based Architecture
+5.2 Pipeline based Architecture (Daniel)
 
 -	Mencionar cómo está armada la arquitectura en cada paso del pipeline, incluyendo el detalle del uso de Luigi para orquestar dichos pasos. Por ejemplo; Descarga: se genera un docker para el cual se publican las imágenes bla bla, (mostrar código) y explicar cómo dicho código permite llevar a cabo el siguiente paso.
 
@@ -87,7 +94,7 @@ Nuevo 4.4 JSON-txts by Subject (Daniel)
 -	Explicar decisiones tomadas para cada paso parte de la arquitectura.
 
 
-6.0 Results
+6.0 Results (Patricio y Alex borrador - Todos mañana)
 
 -	Mencionar los resultados del prelyminary analysis.
 -	Mencionar los resultados del spark.
@@ -97,7 +104,7 @@ Nuevo 4.4 JSON-txts by Subject (Daniel)
 -	Mejoras en cuanto arquitectura.
 -	Otros cuestionamientos que surgen de los datos y no se abarcan en el producto.
 
-7.0 Conclusiones
+7.0 Conclusiones (Todos)
 -	Qué aprendimos: importancia de la escalabilidad, paralelismo, orquestación y desarrollo de productos de datos(desde la planeación hasta implementacion) con un equipo de trabajo.
 -	Visualización de los resultados de tal manera que sean entendibles para usuarios no técnicos.
 - 	Implantación de los resultados en un ejemplo real.
