@@ -43,7 +43,7 @@ services:
       SPARK_PUBLIC_DNS: localhost
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 9
     expose:
       - 7012
       - 7013
@@ -60,7 +60,7 @@ services:
       
       
   client:
-    image: danlexpp/lda_spark:0.1
+    image: johnydickens/spark-client:v2
     command: /bin/bash
     hostname: client
     stdin_open: true
