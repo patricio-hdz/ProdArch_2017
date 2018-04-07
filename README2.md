@@ -26,4 +26,8 @@ Entiendo que aunque el método de Fox y el método de Cannon se parecen, en el p
 
 Dada nuestra formación, entendemos de mejor manera la metodología del algoritmo *Block-Striped Decomposition*, por lo que comenzaremos a desarrollar las funciones correspondientes para implementar este algoritmo en paralelo.
 
+Esta es una referencia de una implementación ya hecha, es para uso interno jajaja:
+
+https://medium.com/tech-vision/parallel-matrix-multiplication-c-parallel-processing-5e3aadb36f27
+
 
