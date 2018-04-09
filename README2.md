@@ -22,9 +22,25 @@ Entiendo que aunque el método de Fox y el método de Cannon se parecen, en el p
 
 ### Alejandro Pérez
 
+Por mi parte consulté la siguiente referencia para conocer los principios de la multiplicación de matrices en paralelo:
+
+http://www.dsi.unive.it/~calpar/6_Progetto-06-07.pdf
+
+Noté que los algoritmos descritos asumen una multiplicación de matrices de la misma dimensión y cuadradas, lo cual vemos útil como primer acercamiento a este tipo de cómputo. Además, teniendo dos matrices A y B con las caractersticas mencionadas, su multiplicación la podemos realizar por bloques:
+
+  1. Descomponemos a A y B en p submatrices, cuya dimensión será $(n/\sqrt{p})x(n/\sqrt{p})$.
+  2. Sí cada bloque de A es $P(A)_{ij}$ y cada bloque de B es $P(B)_{ij}$ entonces cada procesador realizará la multiplicación $P(A)_{ij}*$P(B)_{ij}$
+ 
+La ventaja que veo en un algortimo de este estilo es que las necesidades de memoria permanecen constantes para cada procesador ya que todo el tiempo recibirá dos matrices del mismo tamaño y realizará el mismo trabajo. Es lo que vimos en clase como paralelización de datos entre los procesadores ya que cada uno realizará la misma labor pero con una parte de los datos completos.
+
+Entre los primeros acercamientos veo que es necesario tener un cluster que nos permita identificar a cada procesador con coordenadas para poder asociar los bloques a este, leyendo un poco veo que esta topologa es llamada cartesiana ya que cada core es identificado con coordenadas dentro de una matriz.
+
+
 ### Equipo
 
 Dada nuestra formación, entendemos de mejor manera la metodología del algoritmo *Block-Striped Decomposition*, por lo que comenzaremos a desarrollar las funciones correspondientes para implementar este algoritmo en paralelo.
+
+Como próximos pasos debemos identificar el tipo de arquitectura que necesitamos para identificar a cada Core mediante una coordenda.
 
 Esta es una referencia de una implementación ya hecha, es para uso interno jajaja:
 
