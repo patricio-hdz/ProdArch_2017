@@ -31,7 +31,8 @@ y notamos que en la mayoría de los trabajos en donde se trata este tema, se pre
 
 Al reunirnos para discutir nuestras conclusiones tenemos el siguiente plan de acción idealmente para el próximo avance con el fin de poder ponernos una meta clara respecto a lo que seremos capáces de desarrollar en las siguientes semanas:
 
-  * Cada uno tratará de desarrollar un caso lo más sencillo posible para ver qué *approach* entendemos mejor y el código "ganador" será la base para nuestros próximos avances.
+  * Cada uno tratará de desarrollar un caso lo más sencillo posible para ver qué *approach* entendemos mejor y el código
+  "ganador" será la base para nuestros próximos avances.
   * Desarrollaremos una implementación secuencial para usarla como punto de comparación en nuestro trabajo.
   * Levantaremos un cluster en AWS con nuestros créditos para la implementación del trabajo.
 
