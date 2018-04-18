@@ -19,20 +19,24 @@ Por otro lado y dando continuidad al avance anterior NO nos quedamos sólo con l
 
   * http://personal.cimat.mx:8181/~miguelvargas/Course%20notes/Computo%20en%20paralelo%20con%20OpenMP%201.pdf
   
- Esta alternativa va acorde a la metodología *Block-Striped Decomposition* y la presentación es bastante completa en términos de permitirnos desarrollar el pseudocódigo ya que tiene bastante explicación práctica de cómo es que funciona openMP.
+ Esta alternativa va acorde a la metodología *Block-Striped Decomposition* y la presentación es bastante completa en términos de permitirnos desarrollar el pseudocódigo ya que tiene explicaciones prácticas detalladas de cómo es que funciona openMP.
  
  Revisamos algunas otras referencias como por ejemplo:
  
    * https://prezi.com/amgiu_nlad9u/multiplicacion-de-matrices/
 
 y notamos que en la mayoría de los trabajos en donde se trata este tema, se presenta un comparativo con una implementación secuencial para mostrar las mejoras que se tiene al atacar el problema de manera paralela.
- 
-  - Vamos a tratar de desarrollar las funciones para ambas opciones y derivado de esto vamos a 
-
 
 ## Equipo
 
-Habiendo investigado esto podemos definir que el tipo de cluster que necesitamos es de MPI y en forma de Toro, por lo que utilizando la guía de la clase y nuestros créditos de 
-AWS levantaremos un cluster de MPI para poder implementar el algoritmo. Cómo proximos pasos y avances deberemos tener el cluster de MPI y realizar pruebas para el envío de mensajes 
-a través de este de tal manera que refleje la arquitectura de Toro.
+Al reunirnos para discutir nuestras conclusiones tenemos el siguiente plan de acción idealmente para el próximo avance con el fin de poder ponernos una meta clara respecto a lo que seremos capáces de desarrollar en las siguientes semanas:
 
+  * Cada uno tratará de desarrollar un caso lo ms sencillo posible para ver qué *approach* entendemos mejor y el código "ganador" será la base para nuestros próximos avances.
+  * Desarrollaremos una implementación secuencial para usarla como punto de comparación en nuestro trabajo.
+  * Levantaremos un cluster en AWS con nuestros créditos para la implementación del trabajo.
+
+Aunque en el avance pasado habíamos propuesto comenzar a desarrollar las funciones para la implementación, al investigar más el tema con ese fin, nos hemos dado cuenta que hay más "approaches" de los que pensábamos; por lo que nos parece que el reto ahora es definir correctamente el alcance que tendremos en el proyecto y por ello es que queremos probar al menos 2 metodologías.
+
+Cabe mencionar que dado que teníamos mayor avance en MPI y habiendo investigado lo anterior podemos definir que el tipo de cluster que necesitamos es en forma de Toro. Para este caso, lo siguiente es tener el cluster de MPI y realizar pruebas para el envío de mensajes a través de este de tal manera que refleje la arquitectura de Toro.
+
+Para el caso de openmp y de la implementación secuencial desarrollaremos los casos base y compararemos.
