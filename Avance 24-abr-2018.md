@@ -20,4 +20,8 @@ Como mencionamos en el avance pasado, dentro del alcance del proyecto consideram
 la mejora que se tiene en diversos escenarios. Dado lo anterior nos dimos cuenta que requerimos generar matrices de prueba de alta dimensión por ello 
 desarrollamos el código para generar matrices.
 
-Planeamos que para la próxima semana tengamos la implementación en paralelo junto con pruebas sobre matrices de distintas dimensiones.
+Para los próximos avances definimos:
+  * (2-mayo) Implementación en paralelo y pruebas de tiempos y eficiencia.
+  * (8-mayo) Prueba de los códigos en AWS e investigación de otras métricas de comparación.
+  * (15-mayo) Automatización del pipeline con Docker.
+  * (Semana finales) Avance del trabajo escrito, idealmente a un 70%.
