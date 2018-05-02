@@ -12,4 +12,4 @@ de matrices secuencial y en paralelo, registrando los resultados:
 
 Con esto ya podemos comenzar a realizar las distintas pruebas y comparaciones que deseamos hacer para el trabajo.
 
-La forma en que correríamos el código sería "sh loop.sh >> resultados.csv" y de esta forma genera una tabla con los resultados.
+La forma en que correríamos el código sería "sh loop.sh >> resultados.csv" y de esta forma genera una tabla con los resultados. El archivo resultados_ejemplo.csv muestra un ejemplo del output de este código que nos ayudará a correr ambos códigos y hacer las comparaciones.
