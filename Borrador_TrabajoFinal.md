@@ -12,6 +12,8 @@ Existen distintas maneras de atacar el problema de paralelizar códigos secuenci
 ## Pseudo-algoritmo
 El resultado final esperado es reducir el tiempo necesario que toma ejecutar un algoritmo mediante una asignación de tareas a los procesadores más eficiente.
 
-Supongamos por ejemplo que deseamos realizar una suma de dos vectores 
+Supongamos por ejemplo que deseamos realizar una suma de dos vectores **w = x + y**, **x, y** en \R
 
 ![Imagen1](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im1.JPG)
+
+En este caso podemos ver como las sumas se podrían realizar de manera simultánea, si asignamos cada pedazo de la suma global a distintos procesadores. Un punto relevante en este caso es que no existen una dependencia entre los procesos que se realizan en cada procesador, por ejemplo esto NO funcionaría si estuviéramos utilizando en cada operación el resultado de la operación anterior, ya que sería necesario forzosamente esperar a tener dicho resultado para poder continuar con las operaciones hasta llegar al resultado final.
