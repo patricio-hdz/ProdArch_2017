@@ -13,3 +13,5 @@ Existen distintas maneras de atacar el problema de paralelizar códigos secuenci
 El resultado final esperado es reducir el tiempo necesario que toma ejecutar un algoritmo mediante una asignación de tareas a los procesadores más eficiente.
 
 Supongamos por ejemplo que deseamos realizar una suma de dos vectores 
+
+![tarea1/Img1.jpg](Imagen1)
