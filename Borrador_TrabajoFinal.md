@@ -14,4 +14,4 @@ El resultado final esperado es reducir el tiempo necesario que toma ejecutar un 
 
 Supongamos por ejemplo que deseamos realizar una suma de dos vectores 
 
-![tarea1/Img1.jpg](Imagen1)
+[tarea1/Img1.jpg](Imagen1)
