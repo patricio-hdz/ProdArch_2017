@@ -25,3 +25,14 @@ Por otro lado una operación NO tan directa es el producto punto de dos vectores
 En este caso es menos evidente la manera en que tendríamos que repartir las operaciones a realizarse en los procesadores, sin embargo se puede realizar de la siguiente manera:
 
 ![Imagen3](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im3.JPG)
+
+De esta manera se logra el objetivo que se tenía y funciona como una buena explicación base para introducir que de esta misma manera, atacamos el problema de paralelizar la multiplicación de matrices ya que en ese caso realizamos esta operación de producto punto entre vectores una y otra vez, pero al no depender una de otra podemos de igual manera "romper" las ejecuciones y paralelizar los procesos.
+
+Medidas control
+
+Ahora presentaremos algunas medidas de control que utilizaremos para evaluar si nuestra implementación está teniendo mejores resultados que una ejecución secuencial; las medidas que usaremos son:
+
+- *Tiempo real de procesamiento*: 
+- *Tiempo ideal de procesamiento*:
+- *Eficiencia*:
+
