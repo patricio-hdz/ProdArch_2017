@@ -20,8 +20,8 @@ En este caso podemos ver como las sumas se podrían realizar de manera simultán
 
 Por otro lado una operación NO tan directa es el producto punto de dos vectores **a =< x + y>**; con **x, y** en **R^n** y *a* es un escalar:
 
-![Imagen2](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im1.JPG)
+![Imagen2](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im2.JPG)
 
 En este caso es menos evidente la manera en que tendríamos que repartir las operaciones a realizarse en los procesadores, sin embargo se puede realizar de la siguiente manera:
 
-![Imagen3](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im1.JPG)
+![Imagen3](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im3.JPG)
