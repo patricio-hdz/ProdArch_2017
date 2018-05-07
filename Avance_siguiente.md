@@ -1,6 +1,6 @@
 ## Alex
 
-Ya resolví el problema que estaba teniendo con las regiones durante el levantamiento de las instancias de aws, añadí la variable de tipo de instancia y arregle un par de opciones correspondientes a la subnet y a la vpc.
+Ya resolví el problema que estaba teniendo con las regiones durante el levantamiento de la instancia de aws, añadí la variable de tipo de instancia y arregle un par de opciones correspondientes a la subnet y a la vpc.
 
 Ademas, al correr este script la instancia clonará el repositorio con el código del proyecto para ejecutar los scripts correspondientes, al obtener los resultados los depositaremos en el repositorio que creamos para utilizarlos en el trabajo final.
 
