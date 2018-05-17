@@ -32,14 +32,22 @@ De esta manera se logra el objetivo que se tenía de eficientar la operación y 
 
 ## Medidas control
 
-Ahora presentaremos algunas medidas de control que utilizaremos para evaluar si nuestra implementación está teniendo mejores resultados que una ejecución secuencial tradicional; las medidas que usaremos son:
+Ahora presentaremos algunas métricas de control que utilizaremos para evaluar si nuestra implementación está teniendo mejores resultados que una ejecución secuencial tradicional o no; dichas métricas son las siguientes:
 
 - *Tiempo real de procesamiento*
 - *Tiempo ideal de procesamiento*
 - *Eficiencia*
 - *Speed-up*
 
-- *Tiempo real de procesamiento*: es el tiempo que le lleva al equipo de cómputo ejecutar todas las instrucciones necesarias para completar un programa con **un** thread.
-- *Tiempo ideal de procesamiento*: Si *t_1* es el *tiempo real* bajo la definición anterior y *n* es el número de procesadores utilizado, entonces el *tiempo ideal* de ejecución lo podemos definir como:
+#### Tiempo real de procesamiento
+
+El *tiempo real de procesamiento* es el tiempo que le lleva al equipo de cómputo ejecutar todas las instrucciones necesarias para completar un programa utilizando **un solo** thread.
+
+#### Tiempo ideal de procesamiento
+
+Si *t_1* es el *tiempo real* bajo la definición anterior y *n* es el número de procesadores utilizado, entonces el *tiempo ideal* de procesamiento lo podemos definir como:
+
+![Imagen4](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im4.JPG)
+
 - *Eficiencia*:
 
