@@ -45,10 +45,10 @@ El *tiempo real de procesamiento* es el tiempo que le lleva al equipo de cómput
 
 #### Tiempo ideal de procesamiento
 
-Si *t_1* es el *tiempo real* bajo la definición anterior y *n* es el número de procesadores utilizado, entonces el *tiempo ideal* de procesamiento lo podemos definir como:
+Si <a href="https://www.codecogs.com/eqnedit.php?latex={t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?{t_1}" title="{t_1}" /></a> es el *tiempo real* bajo la definición anterior y <a href="https://www.codecogs.com/eqnedit.php?latex={t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?{t_1}" title="{n}" /></a> es el número de procesadores utilizado, entonces el *tiempo ideal* de procesamiento lo podemos definir como:
 
 ![Imagen4](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im4.JPG)
 
 - *Eficiencia*:
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=\mathcal{W}(A,f)&space;=&space;(T,\bar{f})" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mathcal{W}(A,f)&space;=&space;(T,\bar{f})" title="\mathcal{W}(A,f) = (T,\bar{f})" /></a>
+
