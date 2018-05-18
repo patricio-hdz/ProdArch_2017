@@ -36,8 +36,8 @@ Ahora presentaremos algunas métricas de control que utilizaremos para evaluar s
 
 - *Tiempo real de procesamiento*
 - *Tiempo ideal de procesamiento*
-- *Eficiencia*
 - *Speed-up*
+- *Eficiencia*
 
 #### Tiempo real de procesamiento
 
@@ -51,9 +51,11 @@ Si <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&sp
 
 #### Speed-up
 
-La ganancia en tiempo que se tiene con la ejecución en paralelo de un algoritmo vs su ejecución secuencial se conoce como *speed-up*, y lo podemos visualizar de la siguiente manera:
+La ganancia en tiempo que se tiene con la ejecución en paralelo de un algoritmo en comparación con su ejecución secuencial se conoce como *speed-up*, y lo podemos visualizar de la siguiente manera:
 
 ![Imagen5](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im5.JPG)
+
+donde <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_n}" title="\small {t_n}" /></a> es el tiempo de procesamiento en paralelo.
 
 #### Eficiencia
 
