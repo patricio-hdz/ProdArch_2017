@@ -57,6 +57,8 @@ La ganancia en tiempo que se tiene con la ejecución en paralelo de un algoritmo
 
 donde <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_n}" title="\small {t_n}" /></a> es el tiempo de procesamiento en paralelo para <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{n}" title="\small {n}" /></a> threads.
 
+El *speed-up ideal* es aquel que crece a una razón 1:1, es decir, por cada thread que agregamos, el *speed-up* crece 1 unidad.
+
 #### Eficiencia
 
 La *eficiencia* se define como el *speed-up* por procesador, entonces tomando <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{n}" title="\small {n}" /></a> como el número de procesadores, tenemos la siguiente expresión:
@@ -74,10 +76,28 @@ Mencionar algo de que la idea de la maquina es hacerlo reproducible y por otro l
 
 #### Resultados gráficos
 
-En la siguiente gráfica podemos observar los tiempos de ejecución cuando variamos tanto las dimensiones de las matrices a multiplicar, como cuando paralelizamos con distinto número de threads:
+###### Tiempos reales por thread
+En la siguiente gráfica observamos los tiempos de ejecución cuando variamos tanto las dimensiones de las matrices a multiplicar, como cuando paralelizamos con distinto número de threads:
 
 <p align="center">
   <img src="https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im7.JPG">
 </p>
 
-![Imagen7](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im7.JPG)
+Podemos notar varias cosas de la gráfica anterior:
+
+1. Los tiempos no varían por cantidad de threads para dimensiones "pequeñas".
+2. Notamos un cambio en los tiempos a partir de dimesiones aproximadamente de 360x360.
+3. No es claro qué cantidad de threads es la que tiene mejor performance, pero profundizaremos mas adelante.
+4. Notamos algunos saltos atípicos sin embargo lo atribuimos a la matriz que utilizó en esa iteración ya que se generaron de manera aleatoria y los saltos se dan para TODAS las cantidades de threads.
+
+###### Speed-up
+
+Para poder medir las otras métricas de control que planteamos en la sección pasada, tomaremos las ejecuciones que se tienen para el caso de 1100x1100.
+
+En la siguiente gráfica observamos el *speed-up* y el *speed-up ideal*:
+
+<p align="center">
+  <img src="https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im8.JPG">
+</p>
+
+
