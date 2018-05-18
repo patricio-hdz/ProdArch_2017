@@ -55,7 +55,7 @@ La ganancia en tiempo que se tiene con la ejecución en paralelo de un algoritmo
 
 ![Imagen5](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im5.JPG)
 
-donde <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_n}" title="\small {t_n}" /></a> es el tiempo de procesamiento en paralelo.
+donde <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_n}" title="\small {t_n}" /></a> es el tiempo de procesamiento en paralelo para <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{n}" title="\small {n}" /></a> threads.
 
 #### Eficiencia
 
@@ -63,5 +63,5 @@ La *eficiencia* se define como el *speed-up* por procesador, entonces tomando <a
 
 ![Imagen6](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im6.JPG)
 
-Saludos cordiales, perros!!!
+
 
