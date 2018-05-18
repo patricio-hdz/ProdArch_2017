@@ -92,7 +92,7 @@ Podemos notar varias cosas de la gráfica anterior:
 
 ###### Speed-up
 
-Para poder medir las otras métricas de control que planteamos en la sección pasada, tomaremos las ejecuciones que se tienen para el caso de 1100x1100.
+Para poder medir las otras métricas de control que planteamos en la sección pasada, tomaremos las ejecuciones que se tienen para el caso de 1000x1000.
 
 En la siguiente gráfica observamos el *speed-up* y el *speed-up ideal*:
 
@@ -100,4 +100,5 @@ En la siguiente gráfica observamos el *speed-up* y el *speed-up ideal*:
   <img src="https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im8.JPG">
 </p>
 
+Curiosamente vemos que el *speed-up* es cercano al *speed-up ideal* hasta 4 threads, sin embargo posterior a esto baja y se estabiliza sin mostrar una mejora extra al aumentar la cantidad de threads.
 
