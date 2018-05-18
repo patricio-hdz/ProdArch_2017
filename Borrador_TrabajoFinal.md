@@ -45,7 +45,7 @@ El *tiempo real de procesamiento* es el tiempo que le lleva al equipo de cómput
 
 #### Tiempo ideal de procesamiento
 
-Si <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_1}" title="\small {t_1}" /></a> es el *tiempo real* bajo la definición anterior y <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{80}&space;\small&space;{t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{80}&space;\small&space;{t_1}" title="\small {t_1}" /></a> es el número de procesadores utilizado, entonces el *tiempo ideal* de procesamiento lo podemos definir como:
+Si <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_1}" title="\small {t_1}" /></a> es el *tiempo real* bajo la definición anterior y <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_1}" title="\small {t_1}" /></a> es el número de procesadores utilizado, entonces el *tiempo ideal* de procesamiento lo podemos definir como:
 
 ![Imagen4](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im4.JPG)
 
