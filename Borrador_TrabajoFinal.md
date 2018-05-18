@@ -12,7 +12,7 @@ Existen distintas maneras de atacar el problema de paralelizar códigos secuenci
 ## Pseudo-algoritmo
 El resultado final esperado es reducir el tiempo necesario que toma ejecutar un algoritmo mediante una asignación de tareas a los procesadores más eficiente.
 
-Supongamos por ejemplo que deseamos realizar una suma de dos vectores **w = x + y**; con **x, y** en **R**^n
+Supongamos por ejemplo que deseamos realizar una suma de dos vectores <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;\boldsymbol{w&space;=&space;x&space;&plus;&space;y}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;\boldsymbol{w&space;=&space;x&space;&plus;&space;y}" title="\small \boldsymbol{w = x + y}" /></a>; con **x, y** en **R**^n
 
 ![Imagen1](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im1.JPG)
 
