@@ -100,5 +100,25 @@ En la siguiente gráfica observamos el *speed-up* y el *speed-up ideal*:
   <img src="https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im8.JPG">
 </p>
 
-Curiosamente vemos que el *speed-up* es cercano al *speed-up ideal* hasta 4 threads, sin embargo posterior a esto baja y se estabiliza sin mostrar una mejora extra al aumentar la cantidad de threads.
+Notamos que el *speed-up* es cercano al *speed-up ideal* hasta 4 threads, sin embargo posterior a esto baja y se estabiliza sin mostrar una mejora extra al aumentar la cantidad de threads.
+
+###### Tiempo ideal de procesamiento
+
+Observamos ahora una gráfica donde se compara el *tiempo real de procesamiento* contra el *tiempo ideal de procesamiento* bajo su definición de la sección anterior:
+
+<p align="center">
+  <img src="https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im9.JPG">
+</p>
+
+En este caso, notamos que a partir de 8 threads el *tiempo real* se estabiliza y por lo tanto la diferencia contra el *tiempo ideal* aumenta de manera más evidente, esto nos hace sentido ya que la maquina de donde se obtuvieron los resultados es una maquina con 8 procesadores.
+
+###### Eficiencia
+
+Finalmente presentamos una gráfica donde observamos el cambio en la eficiencia conforme modificamos el número de threads:
+
+<p align="center">
+  <img src="https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im10.JPG">
+</p>
+
+
 
