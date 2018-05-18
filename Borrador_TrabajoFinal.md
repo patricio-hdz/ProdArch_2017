@@ -41,14 +41,25 @@ Ahora presentaremos algunas métricas de control que utilizaremos para evaluar s
 
 #### Tiempo real de procesamiento
 
-El *tiempo real de procesamiento* es el tiempo que le lleva al equipo de cómputo ejecutar todas las instrucciones necesarias para completar un programa utilizando **un solo** thread.
+El *tiempo real de procesamiento* <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_1}" title="\small {t_1}" /></a> es el tiempo que le lleva al equipo de cómputo ejecutar todas las instrucciones necesarias para completar un programa utilizando **un solo** thread.
 
 #### Tiempo ideal de procesamiento
 
-Si <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_1}" title="\small {t_1}" /></a> es el *tiempo real* bajo la definición anterior y <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_1}" title="\small {t_1}" /></a> es el número de procesadores utilizado, entonces el *tiempo ideal* de procesamiento lo podemos definir como:
+Si <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{t_1}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{t_1}" title="\small {t_1}" /></a> es el *tiempo real* bajo la definición anterior y <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{n}" title="\small {n}" /></a> es el número de procesadores utilizados, entonces el *tiempo ideal* de procesamiento lo podemos definir como:
 
 ![Imagen4](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im4.JPG)
 
-- *Eficiencia*:
+#### Speed-up
 
+La ganancia en tiempo que se tiene con la ejecución en paralelo de un algoritmo vs su ejecución secuencial se conoce como *speed-up*, y lo podemos visualizar de la siguiente manera:
+
+![Imagen5](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im5.JPG)
+
+#### Eficiencia
+
+La *eficiencia* se define como el *speed-up* por procesador, entonces tomando <a href="https://www.codecogs.com/eqnedit.php?latex=\dpi{100}&space;\small&space;{n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\dpi{100}&space;\small&space;{n}" title="\small {n}" /></a> como el número de procesadores, tenemos la siguiente expresión:
+
+![Imagen6](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im6.JPG)
+
+Saludos cordiales, perros!!!
 
