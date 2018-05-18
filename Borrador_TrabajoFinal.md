@@ -77,7 +77,7 @@ Mencionar algo de que la idea de la maquina es hacerlo reproducible y por otro l
 En la siguiente gráfica podemos observar los tiempos de ejecución cuando variamos tanto las dimensiones de las matrices a multiplicar, como cuando paralelizamos con distinto número de threads:
 
 <p align="center">
-  <img https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im7.JPG>
+  <img src="https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im7.JPG">
 </p>
 
 ![Imagen7](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im7.JPG)
