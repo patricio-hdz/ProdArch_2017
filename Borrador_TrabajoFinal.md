@@ -120,5 +120,9 @@ Finalmente presentamos una gráfica donde observamos el cambio en la eficiencia 
   <img src="https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im10.JPG">
 </p>
 
+Notamos de la gráfica anterior que aunque con las demás métricas hemos demostrado un mejor performance en cuestión de tiempo, en este caso tenemos un área de oportunidad para mejorar la manera en que estamos paralelizando ya que la eficiencia cae rápidamente conforme aumentamos el número de threads.
 
+## Conclusiones
+
+Aquí irían las conclusiones.
 
