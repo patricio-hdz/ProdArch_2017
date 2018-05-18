@@ -64,4 +64,16 @@ La *eficiencia* se define como el *speed-up* por procesador, entonces tomando <a
 ![Imagen6](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im6.JPG)
 
 
+## Análisis y Resultados
 
+Para generar las siguientes gráficas utilizamos una maquina de AWS con las siguientes características:
+
+Características
+
+Mencionar algo de que la idea de la maquina es hacerlo reproducible y por otro lado hacer un comparativo *justo* y mencionar que aunque el código está preparado para recibir matrices rectangulares, en este trabajo sólo usamos matrices cuadradas ya que son más sencillas de comparar.
+
+#### Resultados gráficos
+
+En la siguiente gráfica podemos observar los tiempos de ejecución cuando variamos tanto las dimensiones de las matrices a multiplicar, como cuando paralelizamos con distinto número de threads:
+
+![Imagen7](https://github.com/patricio-hdz/ProdArch_2017/blob/master/tarea1/Im7.JPG)
