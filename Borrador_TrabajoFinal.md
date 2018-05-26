@@ -96,6 +96,8 @@ Podemos notar varias cosas de la gráfica anterior:
 3. No es claro qué cantidad de threads es la que tiene mejor performance, pero profundizaremos mas adelante.
 4. Notamos algunos saltos atípicos sin embargo lo atribuimos a la matriz que utilizó en esa iteración ya que se generaron de manera aleatoria y los saltos se dan para TODAS las cantidades de threads.
 
+Es importante mencionar que el punto 1 muestra un punto fundamental, ya que paralelizar un algoritmo NO siempre es la respuesta para todo, debemos evaluar si el problema que queremos resolver lo requiere. Lo anterior es relevante ya que muchas veces complicamos las cosas aún cuando no es necesario.
+
 ###### Speed-up
 
 Para poder medir las otras métricas de control que planteamos en la sección pasada, tomaremos las ejecuciones que se tienen para el caso de 1000x1000.
@@ -130,5 +132,8 @@ Notamos de la gráfica anterior que aunque con las demás métricas hemos demost
 
 ## Conclusiones
 
+Como sabemos los equipos de cómputo han aumentado su poder en los últimos años, pero debido a la forma en que dicho poder ha evolucionado y a la creciente necesidad de adaptar algoritmos para explotarlo, decidimos realizar este proyecto como un ejemplo de las bondades que tiene dicha adaptación.
 
+Una de las cosas que más nos sorpendió es la facilidad con la que openMP permite paralelizar una implementación secuencial, ya que es muy intuitiva la manera en que lo hace. Además, el poder observar que NO es regla que una implementación en paralelo siempre sea más veloz que una secuencial es lo que más queremos rescatar ya que hoy en día hay una infinidad de referencias que hablan de ejecuciones en paralelo y nos parece que de repente caemos en intentar ese tipo de metodologías, sin evaluar primero, si nuestro problema eso es lo que requiere.
 
+Finalmente, nuestra implementación en paralelo a pesar de ser mejor que la secuencial a partir de cierto punto, derivado del análisis de las métricas de control notamos que aún tiene mucho espacio para mejorarlo, lo cual implica que aún con una implementación en paralelo debemos medir, evaluar y mejorar.
