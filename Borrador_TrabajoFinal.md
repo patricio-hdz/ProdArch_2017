@@ -2,7 +2,7 @@
 
 Este trabajo busca demostrar de manera evidente, mediante una implementación básica cómo es que se pueden explotar las más recientes características de los equipos de cómputo para lograr un procesamiento más veloz, para esto hemos decidido implementar una multiplicación de matrices de manera paralela y secuencial para poder medir los rendimientos y compararlos.
 
-La idea es utilizar distintas herramientas como lo son: Docker-machine, maquinas en AWS y programación en paralelo para ejemplificar de manera práctica las mejoras en los tiempos de ejecución que se pueden tener hoy en día.
+La idea es utilizar distintas herramientas como lo son: docker-machine, maquinas en AWS y programación en paralelo para ejemplificar de manera práctica las mejoras en los tiempos de ejecución que se pueden tener hoy en día.
 
 ## Motivación
 En los últimos años la velocidad de procesamiento ha crecido debido al uso de procesadores multi-core. Derivado de lo anterior se ha ido teniendo la creciente necesidad de modificar el código de los algoritmos que se usaban comúnmente para adaptarlos de la mejor manera a un paradigma distinto el cual representa una mayor eficiencia, dicho paradigma se le conoce como “procesamiento en paralelo”.
