@@ -2,7 +2,7 @@
 
 Este trabajo busca demostrar de manera evidente, mediante una implementación básica cómo es que se pueden explotar las más recientes características de los equipos de cómputo para lograr un procesamiento más veloz, para esto hemos decidido implementar una multiplicación de matrices de manera paralela y secuencial para poder medir los rendimientos y compararlos.
 
-La idea es utilizar distintas herramientas como lo son: contenedores de Docker, maquinas en AWS y programación en paralelo para ejemplificar de manera práctica las mejoras en los tiempos de ejecución que se pueden tener hoy en día.
+La idea es utilizar distintas herramientas como lo son: Docker-machine, maquinas en AWS y programación en paralelo para ejemplificar de manera práctica las mejoras en los tiempos de ejecución que se pueden tener hoy en día.
 
 ## Motivación
 En los últimos años la velocidad de procesamiento ha crecido debido al uso de procesadores multi-core. Derivado de lo anterior se ha ido teniendo la creciente necesidad de modificar el código de los algoritmos que se usaban comúnmente para adaptarlos de la mejor manera a un paradigma distinto el cual representa una mayor eficiencia, dicho paradigma se le conoce como “procesamiento en paralelo”.
@@ -70,9 +70,15 @@ La *eficiencia* se define como el *speed-up* por procesador, entonces tomando <a
 
 Para generar las siguientes gráficas utilizamos una maquina de AWS con las siguientes características:
 
-Características
+- Tipo de maquina: m4.2xlarge
+- Número de cpu's virtuales: 8
+- Memoria RAM: 32gb
+- Vpc_id: El creado para la clase de MNO
+- Subnet_id: El creado para la clase de MNO
 
-Mencionar algo de que la idea de la maquina es hacerlo reproducible y por otro lado hacer un comparativo *justo* y mencionar que aunque el código está preparado para recibir matrices rectangulares, en este trabajo sólo usamos matrices cuadradas ya que son más sencillas de comparar.
+Pensamos en dos propósitos al utilizar esta maquina levantada con docker-machine, el primero es que deseamos tener un trabajo lo más reproducible posible para que otras personas puedan jugar con el código del proyecto. El segundo propósito es que nos parece que al correr todo en una maquina "nueva" los resultados que obtenemos se vuelven más *justos* y comparables.
+
+Nos parece relevante mencionar en esta parte, que el código está listo para recibir y hacer pruebas con matrices rectangulares, sin embargo, dado que la idea global del trabajo es comparar las ventajas en performance que tiene una implementación en paralelo contra una secuencial, sólo utilizamos matrices cuadradas ya que son más sencillas de manejar.
 
 #### Resultados gráficos
 
@@ -124,5 +130,5 @@ Notamos de la gráfica anterior que aunque con las demás métricas hemos demost
 
 ## Conclusiones
 
-Aquí irían las conclusiones.
+
 
